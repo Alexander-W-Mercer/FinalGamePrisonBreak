@@ -245,6 +245,7 @@ class PrisonBreak extends Phaser.Scene {
                     //console.log("touched a wall I did.")
                 }
                 obj1.stopFollow();
+                console.log(obj1.parent.gaurd)
                 obj1.x = obj1.parent.gaurd.x;
                 obj1.y = obj1.parent.gaurd.y;
                 my.sprite.gaurds.group1.ray.startFollow({
@@ -309,7 +310,7 @@ class PrisonBreak extends Phaser.Scene {
             my.sprite.gaurds[group].ray.parent = my.sprite.gaurds[group];
             my.sprite.gaurds[group].ray.body.setSize(24,24)
             my.sprite.gaurds[group].ray.setScale(0.5)
-            my.sprite.gaurds[group].ray.visible = false;
+            my.sprite.gaurds[group].ray.visible = true;
             my.sprite.gaurds[group].ray.x = my.sprite.gaurds[group].gaurd.x;
             my.sprite.gaurds[group].ray.y = my.sprite.gaurds[group].gaurd.y;
             my.sprite.gaurds[group].ray.seenTimer = 0
@@ -377,12 +378,12 @@ class PrisonBreak extends Phaser.Scene {
 
             let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
             var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
-            var fromX = Math.floor(my.sprite.gaurds.group1.x/this.TILESIZE);
-            var fromY = Math.floor(my.sprite.gaurds.group1.y/this.TILESIZE);
-            console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+            var fromX = Math.floor(my.sprite.gaurds.group1.gaurd.x/this.TILESIZE);
+            var fromY = Math.floor(my.sprite.gaurds.group1.gaurd.y/this.TILESIZE);
+            //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
-            console.log(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y)
-            console.log(my.sprite.player.x, my.sprite.player.y)
+            //console.log(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y)
+            //console.log(my.sprite.player.x, my.sprite.player.y)
             //startX, startY, endX, endY
             this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
                 if (path === null) {
@@ -390,7 +391,7 @@ class PrisonBreak extends Phaser.Scene {
                 } else {
                     console.log("Path was found, and is in array path:");
                     console.log(path);
-                    this.moveCharacter(path, my.sprite.gaurds.group1);
+                    this.moveCharacter(path, my.sprite.gaurds.group1.gaurd);
                 }
             });
             this.finder.calculate();
@@ -411,6 +412,7 @@ class PrisonBreak extends Phaser.Scene {
             }
 
         }, this);
+
 
 
         // TODO: Add movement vfx here
@@ -519,6 +521,20 @@ class PrisonBreak extends Phaser.Scene {
     }
 
     update() {
+        this.path1.startPoint.x = my.sprite.gaurds.group1.gaurd.x
+        this.path1.startPoint.y = my.sprite.gaurds.group1.gaurd.y
+        console.log("The path stuff:")
+        console.log("path:", this.path1)
+        console.log("startx", this.path1.curves[0].p0.x)
+        console.log("starty", this.path1.curves[0].p0.y)
+        console.log("endx", this.path1.curves[0].p1.x)
+        console.log("endy", this.path1.curves[0].p1.y)
+        console.log("rayx", my.sprite.gaurds.group1.ray.x)
+        console.log("rayy", my.sprite.gaurds.group1.ray.y)
+        console.log("playerx", my.sprite.player.x)
+        console.log("playery", my.sprite.player.y)
+        console.log("gaurdx", my.sprite.gaurds.group1.gaurd.x)
+        console.log("gaurdy", my.sprite.gaurds.group1.gaurd.y)
         this.locationtext.x = this.cameras.main._scrollX + 320
         this.locationtext.y = this.cameras.main._scrollY + 140 
 
@@ -534,7 +550,7 @@ class PrisonBreak extends Phaser.Scene {
             }
             
         }
-        console.log(this.path1.curves[0].p1.x)
+        //console.log(this.path1.curves[0].p1.x)
         this.path1.curves[0].p0.x = my.sprite.gaurds.group1.gaurd.x
         this.path1.curves[0].p0.y = my.sprite.gaurds.group1.gaurd.y
         this.path1.curves[0].p1.x = my.sprite.player.x
