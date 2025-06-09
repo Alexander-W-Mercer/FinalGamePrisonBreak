@@ -281,13 +281,13 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.player.setCollideWorldBounds(true);
 
         //Gaurds
-        my.sprite.gaurds.group1.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group2.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group3.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group4.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group5.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group6.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        my.sprite.gaurds.group7.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group1.gaurd = this.physics.add.sprite(9 * this.TILESIZE - (this.TILESIZE/2), 9 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group2.gaurd = this.physics.add.sprite(20 * this.TILESIZE - (this.TILESIZE/2), 4 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group3.gaurd = this.physics.add.sprite(46 * this.TILESIZE - (this.TILESIZE/2), 20 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group4.gaurd = this.physics.add.sprite(24 * this.TILESIZE - (this.TILESIZE/2), 24 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group5.gaurd = this.physics.add.sprite(45 * this.TILESIZE - (this.TILESIZE/2), 42 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group6.gaurd = this.physics.add.sprite(9 * this.TILESIZE - (this.TILESIZE/2), 40 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group7.gaurd = this.physics.add.sprite(6 * this.TILESIZE - (this.TILESIZE/2), 60 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
 
         //Gaurd Routes
         my.sprite.gaurds.group1.gaurd.route = [[9,9], [12, 9], [9, 32], [12, 32]] //cellblock gaurd
@@ -300,29 +300,30 @@ class PrisonBreak extends Phaser.Scene {
 
         my.sprite.player.body.setSize(24,24)
 
-        for (const group in my.sprite.gaurds) {
+        for (const group in my.sprite.gaurds) { //set up the gaurds
+            //Gaurd states
+            my.sprite.gaurds[group].gaurd.boredom = 0; //boredom
+            my.sprite.gaurds[group].gaurd.chasing = false;
+            my.sprite.gaurds[group].gaurd.currentRoute = 0;
+
             //Debug Lines
             my.sprite.gaurds[group].line = this.add.line(20, 20, my.sprite.player.x, my.sprite.player.y, 200, 200, 0xff0000, 1); // WHY DOES THIS WORK??? I MESSED WITH THIS FOR LIKE 3 HOURS WHY DOES THIS WORK. THIS SHOULDN'T WORK.
             my.sprite.gaurds[group].line.visible = false;
 
             //gaurd size
             my.sprite.gaurds[group].gaurd.body.setSize(24,24)
+
+            //Ray paths
+            my.sprite.gaurds[group].path = new Phaser.Curves.Path(my.sprite.gaurds[group].gaurd.x, my.sprite.gaurds[group].gaurd.y);
+            my.sprite.gaurds[group].path.lineTo(my.sprite.player.x, my.sprite.player.y);
+
+            //Rays
+            my.sprite.gaurds[group].ray = this.add.follower(my.sprite.gaurds[group].path, 10, 10, "red_character");
+            console.log("this is the follower:", my.sprite.gaurds[group].ray)
+            my.sprite.gaurds[group].ray.x = 10;
+            my.sprite.gaurds[group].ray.y = 10;
         }
-
-        //Ray paths
-        this.path1 = new Phaser.Curves.Path(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y);
-        this.path1.lineTo(my.sprite.player.x, my.sprite.player.y);
-
-        //Rays
-        my.sprite.gaurds.group1.ray = this.add.follower(this.path1, 10, 10, "red_character");
-        console.log("this is the follower:", my.sprite.gaurds.group1.ray)
-        my.sprite.gaurds.group1.ray.x = 10;
-        my.sprite.gaurds.group1.ray.y = 10;
         
-
-        // this.restartText = this.add.text(15, 10, 'Press m to restart', {fontFamily: 'MS Sans Serif',fontSize: '50px', fill: '#3F2631'})
-        // this.winText.alpha = 0;
-        // this.restartText.alpha = 0;
 
         // Enable collision handling
         this.physics.add.collider(my.sprite.player, this.wallLayer, propertyCollider);
@@ -343,8 +344,8 @@ class PrisonBreak extends Phaser.Scene {
             my.sprite.gaurds[group].ray.y = my.sprite.gaurds[group].gaurd.y;
             my.sprite.gaurds[group].ray.seenTimer = 0
 
-            console.log("here we are")
-            my.sprite.gaurds.group1.ray.startFollow({ //start the ray chasing the player
+            console.log("here we areeee")
+            my.sprite.gaurds[group].ray.startFollow({ //start the ray chasing the player
                         from: 0,
                         to: 1,
                         delay: 0,
@@ -429,13 +430,17 @@ class PrisonBreak extends Phaser.Scene {
             if (this.DEBUG == false) {
                 this.physics.world.drawDebug = true;
                 this.physics.world.debugGraphic = this.add.graphics();
-                my.sprite.line1.visible = true;
+                for (const group in my.sprite.gaurds) {
+                    my.sprite.gaurds[group].line.visible = true;
+                }
                 this.DEBUG = true;
                 this.physics.world.drawDebug = true;
                 console.log("------------------= Debug Active! =------------------")
             } else {
                 this.physics.world.debugGraphic.clear();
-                my.sprite.line1.visible = false;
+                for (const group in my.sprite.gaurds) {
+                    my.sprite.gaurds[group].line.visible = false;
+                }
                 this.physics.world.drawDebug = false;
                 this.DEBUG = false;
                 console.log("------------------= Debug Disabled! =------------------")
@@ -530,43 +535,50 @@ class PrisonBreak extends Phaser.Scene {
         return grid;
     }
 
-    moveCharacter(path, character) { //TAKEN FROM WHITEHEADS PATHFINDING ASSIGNMENT
-        // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
+    moveCharacter(path, character) { //TAKEN (and heavily modified) FROM Professor WHITEHEADS PATHFINDING ASSIGNMENT
+        // Sets up tween
         var tween = {};
-        // for (const i in this.tweens.tweens) { //for somereason the tween manager wasn't cleaning the completed tweens so I had to do it myself
-        //     if (this.tweens.tweens[i].targets && this.tweens.tweens[i].targets[0].value == 1) {
-        //         this.tweens.remove(this.tweens.tweens[i])
-        //     }
 
-        // }
-        //console.log("startingx:", path[0].x)
-        //console.log("startingy:", path[0].y)
-        //console.log("endx:", path[1].x)
-        //console.log("endy:", path[1].y)
-        var ex = path[1].x;
-        var ey = path[1].y;
+        if (ex = path[1]) { // just check that it exists
+            var ex = path[1].x;
+            var ey = path[1].y;
 
-        character.targetX = ex*this.map.tileWidth + this.TILESIZE/2
-        character.targetY = ey*this.map.tileHeight + this.TILESIZE/2
+            character.targetX = ex*this.map.tileWidth + this.TILESIZE/2
+            character.targetY = ey*this.map.tileHeight + this.TILESIZE/2
     
             //console.log(this.tweens.add)
-        this.tweens.add({
-            targets: character, // The object to tween
-            x: character.targetX, // Target X coordinate
-            y: character.targetY, // Target Y coordinate
-            duration: 100, // Tween duration in milliseconds
-            ease: 'linear', // Easing function (ease in and out)
-            yoyo: false, // Play back and forth
-            repeat: 0, // Repeat indefinitely
-        });
+            this.tweens.add({
+                targets: character, // The object to tween
+                x: character.targetX, // Target X coordinate
+                y: character.targetY, // Target Y coordinate
+                duration: 100, // Tween duration in milliseconds
+                ease: 'linear', // Easing function (ease in and out)
+                yoyo: false, // Play back and forth
+                repeat: 0, // Repeat indefinitely
+            });
+        }
 
     }
 
     nextstep(gaurd) {
-        let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
-        var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
-        var fromX = Math.floor(my.sprite.gaurds.group1.gaurd.x/this.TILESIZE);
-        var fromY = Math.floor(my.sprite.gaurds.group1.gaurd.y/this.TILESIZE);
+
+        if (gaurd.chasing == true) {
+            var toX = Math.floor(my.sprite.player.x/this.TILESIZE);
+            var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
+            var fromX = Math.floor(gaurd.x/this.TILESIZE);
+            var fromY = Math.floor(gaurd.y/this.TILESIZE);
+        } else {
+            console.log("look here:")
+            console.log(gaurd)
+            console.log("gaurdcurrentrouteNum:", gaurd.currentRoute)
+            console.log("gaurdcurrentroute:", gaurd.route[gaurd.currentRoute])
+            console.log("x:", gaurd.route[gaurd.currentRoute][0])
+            console.log("y:", gaurd.route[gaurd.currentRoute][1])
+            var toX = gaurd.route[gaurd.currentRoute][0];
+            var toY = gaurd.route[gaurd.currentRoute][1];
+            var fromX = Math.floor(gaurd.x/this.TILESIZE);
+            var fromY = Math.floor(gaurd.y/this.TILESIZE);
+        }
             //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
             //console.log(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y)
@@ -588,14 +600,39 @@ class PrisonBreak extends Phaser.Scene {
         //console.log("line")
         for (const group in my.sprite.gaurds) {
             if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.targetX && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.targetY) {
-                if (my.sprite.gaurds.group1[gaurd].boredom < 0) {
+                if (my.sprite.gaurds[group].gaurd.boredom < 0) {
                     this.nextstep(my.sprite.gaurds[group].gaurd);
-                    my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(100, 400);
+                    my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(0,10);
                 } else {
                     my.sprite.gaurds[group].gaurd.boredom--;
                 }
 
             }
+
+            // update the ray cast path starts and ends
+            my.sprite.gaurds[group].path.startPoint.x = my.sprite.gaurds[group].gaurd.x
+            my.sprite.gaurds[group].path.startPoint.y = my.sprite.gaurds[group].gaurd.y
+            my.sprite.gaurds[group].path.curves[0].p0.x = my.sprite.gaurds[group].gaurd.x
+            my.sprite.gaurds[group].path.curves[0].p0.y = my.sprite.gaurds[group].gaurd.y
+            my.sprite.gaurds[group].path.curves[0].p1.x = my.sprite.player.x
+            my.sprite.gaurds[group].path.curves[0].p1.y = my.sprite.player.y
+
+            //Update debug line graphic
+            my.sprite.gaurds[group].line.geom.x1 = my.sprite.player.x
+            my.sprite.gaurds[group].line.geom.y1 = my.sprite.player.y
+            my.sprite.gaurds[group].line.geom.x2 = my.sprite.gaurds[group].gaurd.x
+            my.sprite.gaurds[group].line.geom.y2 = my.sprite.gaurds[group].gaurd.y
+
+            //check if player is within sightline or not
+            if (my.sprite.gaurds[group].ray.seenTimer > 2) {
+                console.log("YOU ARE BEING CHASED")
+                my.sprite.gaurds[group].line.strokeColor = 6157634
+            } else if (my.sprite.gaurds[group].ray.seenTimer > 0) {
+                my.sprite.gaurds[group].line.strokeColor = 16104514
+            } else {
+                my.sprite.gaurds[group].line.strokeColor = 16711680
+            }
+            
         }
         for (const i in this.tweens.tweens) { //for somereason the tween manager wasn't cleaning the completed tweens so I had to do it myself
             if (this.tweens.tweens[i].targets && this.tweens.tweens[i].targets[0].value == 1) {
@@ -605,8 +642,6 @@ class PrisonBreak extends Phaser.Scene {
         }
         //console.log("--------------------------------")
         //console.log(this.tweens.tweens)
-        this.path1.startPoint.x = my.sprite.gaurds.group1.gaurd.x
-        this.path1.startPoint.y = my.sprite.gaurds.group1.gaurd.y
         // console.log("The path stuff:")
         // console.log("path:", this.path1)
         // console.log("startx", this.path1.curves[0].p0.x)
@@ -622,48 +657,6 @@ class PrisonBreak extends Phaser.Scene {
         this.locationtext.x = this.cameras.main._scrollX + 320
         this.locationtext.y = this.cameras.main._scrollY + 140 
 
-        for (const gaurd in my.sprite.gaurds) {
-            //console.log("seenTimer: ",my.sprite.gaurds[gaurd].ray.seenTimer)
-            if (my.sprite.gaurds[gaurd].ray.seenTimer > 2) {
-                console.log("YOU ARE BEING CHASED")
-                 my.sprite.line1.strokeColor = 6157634
-            } else if (my.sprite.gaurds[gaurd].ray.seenTimer > 0) {
-                my.sprite.line1.strokeColor = 16104514
-            } else {
-                my.sprite.line1.strokeColor = 16711680
-            }
-            
-        }
-        //console.log(this.path1.curves[0].p1.x)
-        this.path1.curves[0].p0.x = my.sprite.gaurds.group1.gaurd.x
-        this.path1.curves[0].p0.y = my.sprite.gaurds.group1.gaurd.y
-        this.path1.curves[0].p1.x = my.sprite.player.x
-        this.path1.curves[0].p1.y = my.sprite.player.y
-        //console.log(this.path1.curves[0].p1.x)
-
-        // console.log("////////////////////////////////")
-        //console.log(my.sprite.gaurds.group1.ray.x)
-        //console.log(my.sprite.gaurds.group1.ray.y)
-        //console.log(this.path1)
-        my.sprite.line1.geom.x1 = my.sprite.player.x
-        my.sprite.line1.geom.y1 = my.sprite.player.y
-        my.sprite.line1.geom.x2 = my.sprite.gaurds.group1.gaurd.x
-        my.sprite.line1.geom.y2 = my.sprite.gaurds.group1.gaurd.y
-        // console.log(my.sprite.player.body.blocked.down)
-        // if(my.sprite.player.body.blocked.up && this.GRAVITYDIRECTION && (my.sprite.player.body.velocity.x != 0)) {
-        //     this.WALKTIME++;
-        //     console.log(this.WALKTIME)
-        //     console.log("walkinggggggggggggggggggggggggggg")
-        // } else if (my.sprite.player.body.blocked.down && !this.GRAVITYDIRECTION && (my.sprite.player.body.velocity.x != 0)) {
-        //     this.WALKTIME++;
-        // }
-
-        // console.log(my.sprite.player.body.velocity.x)
-        // if (this.WALKTIME > 10 - (Math.abs(my.sprite.player.body.velocity.x) / 200)) {
-        //     this.walkSound.play();
-        //     this.WALKTIME = 0; //test
-        // }
-        // console.log(my.sprite.player)
         
         // if (this.WONGAME) {
         //     my.sprite.player.x = this.FROZENX;
