@@ -244,8 +244,8 @@ class PrisonBreak extends Phaser.Scene {
                     obj1.seenTimer = 0;
                     //console.log("touched a wall I did.")
                 }
-                obj1.stopFollow();
-                console.log(obj1.parent.gaurd)
+                //obj1.stopFollow();
+                //console.log(obj1.parent.gaurd)
                 obj1.x = obj1.parent.gaurd.x;
                 obj1.y = obj1.parent.gaurd.y;
                 my.sprite.gaurds.group1.ray.startFollow({
@@ -263,6 +263,12 @@ class PrisonBreak extends Phaser.Scene {
         console.log("reached here!!!!!1")
         my.sprite.gaurds = {};
         my.sprite.gaurds.group1 = {}
+        my.sprite.gaurds.group2 = {}
+        my.sprite.gaurds.group3 = {}
+        my.sprite.gaurds.group4 = {}
+        my.sprite.gaurds.group5 = {}
+        my.sprite.gaurds.group6 = {}
+        my.sprite.gaurds.group7 = {}
         //this.physics.add.overlap(my.sprite.gaurds.group1.ray, this.wallLayer, propertyOverlapper);
 
         // Find water tiles
@@ -273,16 +279,38 @@ class PrisonBreak extends Phaser.Scene {
         // // set up player avatar
         my.sprite.player = this.physics.add.sprite(160, 160, "green_character", "green_character.png");
         my.sprite.player.setCollideWorldBounds(true);
+
+        //Gaurds
         my.sprite.gaurds.group1.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
-        //my.sprite.gaurds.group1.setCollideWorldBounds(true);
-        //Debug Lines
-        my.sprite.line1 = this.add.line(20, 20, my.sprite.player.x, my.sprite.player.y, 200, 200, 0xff0000, 1); // WHY DOES THIS WORK??? I MESSED WITH THIS FOR LIKE 3 HOURS WHY DOES THIS WORK. THIS SHOULDN'T WORK.
-        my.sprite.line1.visible = false;
+        my.sprite.gaurds.group2.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group3.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group4.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group5.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group6.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+        my.sprite.gaurds.group7.gaurd = this.physics.add.sprite(350, 350, "red_character", "red_character.png");
+
+        //Gaurd Routes
+        my.sprite.gaurds.group1.gaurd.route = [[9,9], [12, 9], [9, 32], [12, 32]] //cellblock gaurd
+        my.sprite.gaurds.group2.gaurd.route = [[20,4], [33, 4], [33, 16], [20, 16]] //cafeteria gaurd
+        my.sprite.gaurds.group3.gaurd.route = [[46,20], [48, 5], [56, 7], [51, 21]] // gaurd quarters gaurd
+        my.sprite.gaurds.group4.gaurd.route = [[24,24], [30, 26], [30, 34], [21, 36]] //courtyard gaurd
+        my.sprite.gaurds.group5.gaurd.route = [[45,42], [37, 42], [37, 39], [45, 39]] // storage gaurd
+        my.sprite.gaurds.group6.gaurd.route = [[9,40], [9, 48], [17, 48], [16, 40]] //visitors gaurd
+        my.sprite.gaurds.group7.gaurd.route = [[6,60], [17, 61], [9, 68], [17, 67]] //outside gaurd
+
         my.sprite.player.body.setSize(24,24)
-        my.sprite.gaurds.group1.gaurd.body.setSize(24,24)
+
+        for (const group in my.sprite.gaurds) {
+            //Debug Lines
+            my.sprite.gaurds[group].line = this.add.line(20, 20, my.sprite.player.x, my.sprite.player.y, 200, 200, 0xff0000, 1); // WHY DOES THIS WORK??? I MESSED WITH THIS FOR LIKE 3 HOURS WHY DOES THIS WORK. THIS SHOULDN'T WORK.
+            my.sprite.gaurds[group].line.visible = false;
+
+            //gaurd size
+            my.sprite.gaurds[group].gaurd.body.setSize(24,24)
+        }
 
         //Ray paths
-        this.path1 = new Phaser.Curves.Path(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y); //my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y
+        this.path1 = new Phaser.Curves.Path(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y);
         this.path1.lineTo(my.sprite.player.x, my.sprite.player.y);
 
         //Rays
@@ -310,7 +338,7 @@ class PrisonBreak extends Phaser.Scene {
             my.sprite.gaurds[group].ray.parent = my.sprite.gaurds[group];
             my.sprite.gaurds[group].ray.body.setSize(24,24)
             my.sprite.gaurds[group].ray.setScale(0.5)
-            my.sprite.gaurds[group].ray.visible = true;
+            my.sprite.gaurds[group].ray.visible = false;
             my.sprite.gaurds[group].ray.x = my.sprite.gaurds[group].gaurd.x;
             my.sprite.gaurds[group].ray.y = my.sprite.gaurds[group].gaurd.y;
             my.sprite.gaurds[group].ray.seenTimer = 0
@@ -392,6 +420,8 @@ class PrisonBreak extends Phaser.Scene {
                     console.log("Path was found, and is in array path:");
                     console.log(path);
                     this.moveCharacter(path, my.sprite.gaurds.group1.gaurd);
+                    console.log(this.moveCharacter)
+                    console.log(path)
                 }
             });
             this.finder.calculate();
@@ -502,39 +532,93 @@ class PrisonBreak extends Phaser.Scene {
 
     moveCharacter(path, character) { //TAKEN FROM WHITEHEADS PATHFINDING ASSIGNMENT
         // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
-        var tweens = [];
-        for(var i = 0; i < path.length-1; i++){
-            var ex = path[i+1].x;
-            var ey = path[i+1].y;
-            tweens.push({
-                x: ex*this.map.tileWidth + this.TILESIZE/2,
-                y: ey*this.map.tileHeight + this.TILESIZE/2,
-                duration: 100
-            });
-        }
+        var tween = {};
+        // for (const i in this.tweens.tweens) { //for somereason the tween manager wasn't cleaning the completed tweens so I had to do it myself
+        //     if (this.tweens.tweens[i].targets && this.tweens.tweens[i].targets[0].value == 1) {
+        //         this.tweens.remove(this.tweens.tweens[i])
+        //     }
+
+        // }
+        //console.log("startingx:", path[0].x)
+        //console.log("startingy:", path[0].y)
+        //console.log("endx:", path[1].x)
+        //console.log("endy:", path[1].y)
+        var ex = path[1].x;
+        var ey = path[1].y;
+
+        character.targetX = ex*this.map.tileWidth + this.TILESIZE/2
+        character.targetY = ey*this.map.tileHeight + this.TILESIZE/2
     
-        this.tweens.chain({
-            targets: character,
-            tweens: tweens
+            //console.log(this.tweens.add)
+        this.tweens.add({
+            targets: character, // The object to tween
+            x: character.targetX, // Target X coordinate
+            y: character.targetY, // Target Y coordinate
+            duration: 100, // Tween duration in milliseconds
+            ease: 'linear', // Easing function (ease in and out)
+            yoyo: false, // Play back and forth
+            repeat: 0, // Repeat indefinitely
         });
 
     }
 
+    nextstep(gaurd) {
+        let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
+        var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
+        var fromX = Math.floor(my.sprite.gaurds.group1.gaurd.x/this.TILESIZE);
+        var fromY = Math.floor(my.sprite.gaurds.group1.gaurd.y/this.TILESIZE);
+            //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+
+            //console.log(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y)
+            //console.log(my.sprite.player.x, my.sprite.player.y)
+            //startX, startY, endX, endY
+        this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
+            if (path === null) {
+                console.log("Path not found");
+            } else {
+                console.log("Path was found, and is in array path:");
+                console.log(path);
+                this.moveCharacter(path, gaurd);
+            }
+        });
+        this.finder.calculate();
+    }
+
     update() {
+        //console.log("line")
+        for (const group in my.sprite.gaurds) {
+            if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.targetX && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.targetY) {
+                if (my.sprite.gaurds.group1[gaurd].boredom < 0) {
+                    this.nextstep(my.sprite.gaurds[group].gaurd);
+                    my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(100, 400);
+                } else {
+                    my.sprite.gaurds[group].gaurd.boredom--;
+                }
+
+            }
+        }
+        for (const i in this.tweens.tweens) { //for somereason the tween manager wasn't cleaning the completed tweens so I had to do it myself
+            if (this.tweens.tweens[i].targets && this.tweens.tweens[i].targets[0].value == 1) {
+                this.tweens.remove(this.tweens.tweens[i])
+            }
+
+        }
+        //console.log("--------------------------------")
+        //console.log(this.tweens.tweens)
         this.path1.startPoint.x = my.sprite.gaurds.group1.gaurd.x
         this.path1.startPoint.y = my.sprite.gaurds.group1.gaurd.y
-        console.log("The path stuff:")
-        console.log("path:", this.path1)
-        console.log("startx", this.path1.curves[0].p0.x)
-        console.log("starty", this.path1.curves[0].p0.y)
-        console.log("endx", this.path1.curves[0].p1.x)
-        console.log("endy", this.path1.curves[0].p1.y)
-        console.log("rayx", my.sprite.gaurds.group1.ray.x)
-        console.log("rayy", my.sprite.gaurds.group1.ray.y)
-        console.log("playerx", my.sprite.player.x)
-        console.log("playery", my.sprite.player.y)
-        console.log("gaurdx", my.sprite.gaurds.group1.gaurd.x)
-        console.log("gaurdy", my.sprite.gaurds.group1.gaurd.y)
+        // console.log("The path stuff:")
+        // console.log("path:", this.path1)
+        // console.log("startx", this.path1.curves[0].p0.x)
+        // console.log("starty", this.path1.curves[0].p0.y)
+        // console.log("endx", this.path1.curves[0].p1.x)
+        // console.log("endy", this.path1.curves[0].p1.y)
+        // console.log("rayx", my.sprite.gaurds.group1.ray.x)
+        // console.log("rayy", my.sprite.gaurds.group1.ray.y)
+        // console.log("playerx", my.sprite.player.x)
+        // console.log("playery", my.sprite.player.y)
+        // console.log("gaurdx", my.sprite.gaurds.group1.gaurd.x)
+        // console.log("gaurdy", my.sprite.gaurds.group1.gaurd.y)
         this.locationtext.x = this.cameras.main._scrollX + 320
         this.locationtext.y = this.cameras.main._scrollY + 140 
 
