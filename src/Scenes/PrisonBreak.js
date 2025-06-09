@@ -37,11 +37,11 @@ class PrisonBreak extends Phaser.Scene {
         this.FROZENX = 0;
         this.FROZENY = 0;
         this.ACCELERATION = 800;
-        this.DRAG = 1000;    // DRAG < ACCELERATION = icy slide
+        this.DRAG = 1500;    // DRAG < ACCELERATION = icy slide
         this.physics.world.gravity.y = 0;
         this.JUMP_VELOCITY = -800;
         this.PARTICLE_VELOCITY = 50;
-        this.SCALE = 1.75;
+        this.SCALE = 1;
         this.MAX_SPEED = 300;
         console.log(this)
         console.log("we've made it to init")
@@ -50,7 +50,7 @@ class PrisonBreak extends Phaser.Scene {
         this.GRAVITYDIRECTION = 0;
         this.WONGAME = false;
         this.DEBUG = false;
-        this.physics.world.setBounds(0, 0, 1920, 1920)
+        this.physics.world.setBounds(0, 0, 1920, 2240)
         this.TILESIZE = 32;
         //console.log("made it here!")
     }
@@ -248,7 +248,7 @@ class PrisonBreak extends Phaser.Scene {
                 //console.log(obj1.parent.gaurd)
                 obj1.x = obj1.parent.gaurd.x;
                 obj1.y = obj1.parent.gaurd.y;
-                my.sprite.gaurds.group1.ray.startFollow({
+                obj1.startFollow({
                         from: 0,
                         to: 1,
                         delay: 0,
@@ -650,10 +650,12 @@ class PrisonBreak extends Phaser.Scene {
             //check if player is within sightline or not
             if (my.sprite.gaurds[group].ray.seenTimer > 2) {
                 //console.log("YOU ARE BEING CHASED")
+                my.sprite.gaurds[group].gaurd.chasing = true;
                 my.sprite.gaurds[group].line.strokeColor = 6157634
             } else if (my.sprite.gaurds[group].ray.seenTimer > 0) {
                 my.sprite.gaurds[group].line.strokeColor = 16104514
             } else {
+                my.sprite.gaurds[group].gaurd.chasing = false;
                 my.sprite.gaurds[group].line.strokeColor = 16711680
             }
             
