@@ -1,22 +1,6 @@
 class PrisonBreak extends Phaser.Scene {
     constructor() {
         super("PrisonBreakScene");
-
-        // document.addEventListener('keydwn', (event) => { //Template for key press action taken from online
-        //     if (event.key === 'm') {
-        //         if (this.WONGAME) {
-        //             console.log("Restarting Game");
-        //             this.WONGAME = false;
-        //             this.FROZENX = 0;
-        //             this.FROZENY = 0;
-        //             my.sprite.player.x = 400;
-        //             my.sprite.player.y = 1200;
-        //             this.winText.alpha = 0;
-        //             this.restartText.alpha = 0;
-
-        //         }
-        //     }
-        // });
     }
 
     preload() {
@@ -24,11 +8,9 @@ class PrisonBreak extends Phaser.Scene {
         this.load.image("red_character", "red_character.png")
         this.load.image("purple_character", "purple_character.png")
         this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
-        // this.load.audio('coin', 'assets/coin.wav');
+        this.load.audio('coin', 'assets/coin.wav');
         // this.load.audio('walk', 'assets/walk.wav');
         // this.load.audio('hurt', 'assets/hurt.wav');
-        // this.load.audio('gravitySwap', 'assets/gravitySwap.wav');
-        // this.load.audio('jump', 'assets/jump.wav');
     }
 
     init() {
@@ -53,18 +35,20 @@ class PrisonBreak extends Phaser.Scene {
         this.DEBUG = false;
         this.physics.world.setBounds(0, 0, 1920, 2240)
         this.TILESIZE = 32;
+
+        this.GAMEOVER = false;
         //console.log("made it here!")
     }
 
     create() {
-        // this.coinSound = this.sound.add('coin');
+        this.coinSound = this.sound.add('coin');
         // this.walkSound = this.sound.add('walk');
         // this.jumpSound = this.sound.add('jump');
         // this.gravitySound = this.sound.add('gravitySwap');
         // this.hurtSound = this.sound.add('hurt');
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
-        this.map = this.add.tilemap("PrisonBreak", this.TILESIZE, this.TILESIZE, 50, 28); //should this be 18 / 18 or 64 /64 ? maybe test that me idk
+        this.map = this.add.tilemap("PrisonBreak", this.TILESIZE, this.TILESIZE, 70, 60); //should this be 18 / 18 or 64 /64 ? maybe test that me idk
 
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
@@ -79,13 +63,8 @@ class PrisonBreak extends Phaser.Scene {
         this.interactions = this.map.createLayer("interactions", this.tileset, 0, 0);
         this.walkablesLayer = this.map.createLayer("walkables", this.tileset, 0, 0);
         this.walkablesLayer.visible = false;
-        //this.detailsLayer = this.map.createLayer("details", this.tileset, 0, 0);
-        //this.winconditionLayer = this.map.createLayer("wincondition", this.tileset, 0, 0);
-        //this.gravityChangersLayer = this.map.createLayer("gravityChangers", this.tileset, 0, 0);
-        //this.hazardsLayer = this.map.createLayer("hazards", this.tileset, 0, 0);
-        //this.hazardsLayer.tilemap.flipY = false;
 
-        //this.animatedTiles.init(this.map);
+        this.animatedTiles.init(this.map);
 
         // Make it collidable
         this.wallLayer.setCollisionByProperty({
@@ -105,17 +84,19 @@ class PrisonBreak extends Phaser.Scene {
         this.finder.setAcceptableTiles([446, 447, 448]);
 
         // Create coins from Objects layer in tilemap
+        console.log("making objects from this.map...")
         this.coins = this.map.createFromObjects("coins", {
             name: "coin",
-            key: "tilemap_sheet",
+            key: "coin_sheet",
             frame: 141
         });
+        console.log(this.coins)
 
         this.anims.create({
             key: 'coinAnim',
             frames: [
-                { key: 'tilemap_sheet', frame: 141 }, // First frame
-                { key: 'tilemap_sheet', frame: 159 }  // Second frame
+                { key: 'coin_sheet', frame: 141 }, // First frame
+                { key: 'coin_sheet', frame: 159 }  // Second frame
             ],
             frameRate: 2,
             repeat: -1
@@ -128,57 +109,6 @@ class PrisonBreak extends Phaser.Scene {
         // Create a Phaser group out of the array this.coins
         // This will be used for collision detection below.
         this.coinGroup = this.add.group(this.coins);
-
-
-        // let oneWayCollisionProcess = (obj1, obj2) => {
-        //     //console.log("running")
-        //     if (obj2.properties.gravity) {
-        //         this.TOUCHING = true;
-        //         console.log("touching somethingggggggggggggggggggggggggggggggggggggggggggggggggggggggg")
-        //     }
-
-        //     if (this.TOUCHING == true) {
-        //         console.log("FLIP THE GRAVITY IT IS TOUCHING")
-        //         console.log("this.CHANGEDGRAV:")
-        //         console.log(this.CHANGEDGRAV)
-        //         if (this.CHANGEDGRAV == false) { // has it not been flipped yet?
-        //             if (this.GRAVITYDIRECTION == 0) { //flip gravity
-        //                 this.GRAVITYDIRECTION = 1;
-        //                 this.gravitySound.play();
-        //             } else {
-        //                 this.GRAVITYDIRECTION = 0;
-        //                 this.gravitySound.play();
-        //             }
-        //             this.CHANGEDGRAV = true; // it has been flipped
-        //         }
-        //     } else {
-        //         this.CHANGEDGRAV = false;
-        //     }
-
-        //     if (obj2.properties.gravity) {
-        //         //console.log("upwards")             
-        //         return false;
-        //     } else {
-        //         return true;
-        //     }
-        //     /*
-        //     if (this.TOUCHING == false) {
-        //         if (obj2.properties.gravity) {
-        //             //console.log("switch")    
-        //             this.TOUCHING = true;            
-        //             if (this.GRAVITYDIRECTION == 0) {
-        //                 this.GRAVITYDIRECTION = 1;
-        //                 this.groundLayer.toggleFlipY()
-        //                 //console.log(this.groundLayer.flipY)
-        //                 //console.log("////////////////////////////////////////////////////////////////")
-        //             } else {
-        //                 this.GRAVITYDIRECTION = 0;
-        //                 this.groundLayer.toggleFlipY()
-        //                 //console.log(this.groundLayer.flipY)
-        //                 //console.log("////////////////////////////////////////////////////////////////")
-        //             }
-        //         }
-        //     }
 
         let propertyCollider = (obj1, obj2) => {
             if (obj2.properties.collides) {
@@ -223,6 +153,23 @@ class PrisonBreak extends Phaser.Scene {
             }
         }
 
+        let groundOverlap = (obj1, obj2) => {
+            //console.log("this is working currently")
+            //console.log(obj2.properties)
+            console.log("overlapping currently")
+            if (obj2.properties.red) {
+                this.cameras.main.setBackgroundColor('#c49595');
+            } else if (obj2.properties.green) {
+                this.cameras.main.setBackgroundColor('#86c280');
+            } else if (obj2.properties.gray) {
+                this.cameras.main.setBackgroundColor('#c7a1cc');
+            } else if (obj2.properties.blue) {
+                this.cameras.main.setBackgroundColor('#80bbc2');
+            } else if (obj2.properties.brown) {
+                this.cameras.main.setBackgroundColor('#c2a380');
+            }
+        }
+
         let entityOverlap = (obj1, obj2) => {
             if (obj2 == my.sprite.player) { // If the player has been touched by the ray:
                 obj1.stopFollow();
@@ -249,6 +196,14 @@ class PrisonBreak extends Phaser.Scene {
                     });
                 obj1.hitWall = false;
             }
+        }
+
+        let enemyOverlap = (obj1, obj2) => {
+            if (obj2 == my.sprite.player) { // If the player has been touched by the ray:
+                console.log("hit enemy")
+                this.lostGame()
+            }
+            this.GAMEOVER = true;
         }
 
         console.log("reached here!!!!!1")
@@ -329,6 +284,7 @@ class PrisonBreak extends Phaser.Scene {
         // Enable collision handling
         this.physics.add.collider(my.sprite.player, this.wallLayer, propertyCollider);
         this.physics.add.overlap(my.sprite.player, this.interactions, locationOverlap);
+        this.physics.add.overlap(my.sprite.player, this.groundLayer, groundOverlap);
 
         for (const group in my.sprite.gaurds) { // set up the ray casting
             console.log(my.sprite.gaurds[group].ray)
@@ -336,6 +292,7 @@ class PrisonBreak extends Phaser.Scene {
             this.physics.add.overlap(my.sprite.gaurds[group].ray, this.wallLayer, propertyOverlap);
             this.physics.add.overlap(my.sprite.gaurds[group].ray, my.sprite.gaurds[group].gaurd, entityOverlap);
             this.physics.add.overlap(my.sprite.gaurds[group].ray, my.sprite.player, entityOverlap);
+            this.physics.add.overlap(my.sprite.gaurds[group].gaurd, my.sprite.player, enemyOverlap);
             my.sprite.gaurds[group].ray.hitWall = false;
             my.sprite.gaurds[group].ray.parent = my.sprite.gaurds[group];
             my.sprite.gaurds[group].ray.body.setSize(24,24)
@@ -363,45 +320,43 @@ class PrisonBreak extends Phaser.Scene {
         // TODO: create coin collect particle effect here
         // Important: make sure it's not running
 
-        // my.vfx.coin = this.add.particles(0, 0, "kenny-particles", {
-        //     frame: ['star_09.png'],
-        //     // TODO: Try: add random: true
-        //     //random: true,
-        //     scale: {start: 0.1, end: 0.3},
-        //     // TODO: Try: maxAliveParticles: 8,
-        //     //maxAliveParticles: 1,
-        //     lifespan: 350,
-        //     stopAfter: 1,
-        //     // TODO: Try: gravityY: -400,
-        //     gravityY: -400,
-        //     alpha: {start: 1, end: 0.1}, 
-        // });
+        my.vfx.coin = this.add.particles(0, 0, "kenny-particles", {
+            frame: ['star_09.png'],
+            // TODO: Try: add random: true
+            //random: true,
+            scale: {start: 0.1, end: 0.3},
+            // TODO: Try: maxAliveParticles: 8,
+            //maxAliveParticles: 1,
+            lifespan: 350,
+            stopAfter: 1,
+            // TODO: Try: gravityY: -400,
+            gravityY: -400,
+            alpha: {start: 1, end: 0.1}, 
+        });
 
-        // my.vfx.coin.stop();
+        my.vfx.coin.stop();
 
 
         // Coin collision handler
-        // this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
+        this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
 
-        //     my.vfx.coin.startFollow(obj2, 0, 0, false);
-        //     my.vfx.coin.start();
-        //     this.coinSound.play();
+            my.vfx.coin.startFollow(obj2, 0, 0, false);
+            my.vfx.coin.start();
+            this.coinSound.play();
 
-        //     //my.vfx.coin.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-        //     ////////////////////
-        //     // TODO: start the coin collect particle effect here
-        //     ////////////////////
-        //     //console.log("overlap")
-        //     obj2.destroy(); // remove coin on overlap
-        //     //console.log("overlap complete")
-        //     //my.vfx.coin.stop();
+            //my.vfx.coin.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+            ////////////////////
+            // TODO: start the coin collect particle effect here
+            ////////////////////
+            //console.log("overlap")
+            obj2.destroy(); // remove coin on overlap
+            //console.log("overlap complete")
+            //my.vfx.coin.stop();
 
-        // });
+        });
 
         // set up Phaser-provided cursor key input
         cursors = this.input.keyboard.createCursorKeys();
-
-        this.rKey = this.input.keyboard.addKey('R');
 
         // debug key listener (assigned to D key)
         this.input.keyboard.on('keydown-D', () => {
@@ -427,6 +382,11 @@ class PrisonBreak extends Phaser.Scene {
 
         }, this);
 
+        this.input.keyboard.on('keydown-R', () => {
+
+            this.scene.restart()
+
+        }, this);
 
 
         // TODO: Add movement vfx here
@@ -492,6 +452,15 @@ class PrisonBreak extends Phaser.Scene {
             });
             this.finder.calculate();
         }
+
+        //Death Screen
+        my.sprite.deathRectangle = this.add.rectangle(750, 375, 1500, 750, 0x32a852, 1);
+        this.GameOverText = this.add.text(0, 0, 'You Have Been Caught.', {fontFamily: 'Georgia',fontSize: '120px', fill: '#3F2631'})
+        this.restartText = this.add.text(0, 0, 'Press R to restart Game', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.GameOverText.alpha = 0;
+        this.restartText.alpha = 0;
+        my.sprite.deathRectangle.alpha = 0;
+
     }
 
     // layersToGrid
@@ -610,10 +579,21 @@ class PrisonBreak extends Phaser.Scene {
         this.finder.calculate();
     }
 
+    lostGame() {
+        this.GameOverText.alpha = 1;
+        this.restartText.alpha = 1;
+        my.sprite.deathRectangle.alpha = 1;
+    }
+
+
     update() {
+        //footstep sound effects:
+        
+
+        
         //Gaurd AI
-        console.log("chasing:", my.sprite.gaurds.group1.gaurd.chasing)
-        console.log("searching:", my.sprite.gaurds.group1.gaurd.searching)
+        //console.log("chasing:", my.sprite.gaurds.group1.gaurd.chasing)
+        //console.log("searching:", my.sprite.gaurds.group1.gaurd.searching)
         for (const group in my.sprite.gaurds) {
             my.sprite.gaurds[group].shocktext.x = my.sprite.gaurds[group].gaurd.x - 5
             my.sprite.gaurds[group].shocktext.y = my.sprite.gaurds[group].gaurd.y - 15
@@ -702,6 +682,13 @@ class PrisonBreak extends Phaser.Scene {
         this.locationtext.x = this.cameras.main._scrollX + 20
         this.locationtext.y = this.cameras.main._scrollY + 20 
 
+        this.GameOverText.x = this.cameras.main._scrollX + 80
+        this.GameOverText.y = this.cameras.main._scrollY + 120
+        this.restartText.x = this.cameras.main._scrollX + 500
+        this.restartText.y = this.cameras.main._scrollY + 240
+        my.sprite.deathRectangle.x  = this.cameras.main._scrollX + 750
+        my.sprite.deathRectangle.y  = this.cameras.main._scrollY + 375
+
         
         // if (this.WONGAME) {
         //     my.sprite.player.x = this.FROZENX;
@@ -735,40 +722,43 @@ class PrisonBreak extends Phaser.Scene {
         // }
         // my.vfx.water.startFollow(this.waterTiles[Math.floor(Math.random() * this.waterTiles.length)], 0, 0, false);
         //console.log(my.sprite.player.body.velocity.x)
-        if(cursors.left.isDown) {
-            if (my.sprite.player.body.velocity.x < 0) {
-                my.sprite.player.setAccelerationX(-this.ACCELERATION);
-            } else {
-                my.sprite.player.setAccelerationX(-this.ACCELERATION - this.DRAG); //if its moving other direction
-            }
-        } else if(cursors.right.isDown) {
-            if (my.sprite.player.body.velocity.x > 0) {
-                my.sprite.player.setAccelerationX(this.ACCELERATION);
-            } else {
-                my.sprite.player.setAccelerationX(this.ACCELERATION + this.DRAG); //if its moving other direction
-            }
-        } else { // If no keys are down
-            my.sprite.player.setAccelerationX(0);
-            my.sprite.player.setDragX(this.DRAG);
-        }
+        if (this.GAMEOVER == false) {
 
-        if(cursors.up.isDown) {
-            if (my.sprite.player.body.velocity.y < 0) {
-                my.sprite.player.setAccelerationY(-this.ACCELERATION);
-            } else {
-                my.sprite.player.setAccelerationY(-this.ACCELERATION - this.DRAG); //if its moving other direction
+            if(cursors.left.isDown) {
+                if (my.sprite.player.body.velocity.x < 0) {
+                    my.sprite.player.setAccelerationX(-this.ACCELERATION);
+                } else {
+                    my.sprite.player.setAccelerationX(-this.ACCELERATION - this.DRAG); //if its moving other direction
+                }
+            } else if(cursors.right.isDown) {
+                if (my.sprite.player.body.velocity.x > 0) {
+                    my.sprite.player.setAccelerationX(this.ACCELERATION);
+                } else {
+                    my.sprite.player.setAccelerationX(this.ACCELERATION + this.DRAG); //if its moving other direction
+                }
+            } else { // If no keys are down
+                my.sprite.player.setAccelerationX(0);
+                my.sprite.player.setDragX(this.DRAG);
             }
-        } else if(cursors.down.isDown) {
-            if (my.sprite.player.body.velocity.y > 0) {
-                my.sprite.player.setAccelerationY(this.ACCELERATION);
-            } else {
-                my.sprite.player.setAccelerationY(this.ACCELERATION + this.DRAG); //if its moving other direction
+
+            if(cursors.up.isDown) {
+               if (my.sprite.player.body.velocity.y < 0) {
+                    my.sprite.player.setAccelerationY(-this.ACCELERATION);
+                } else {
+                    my.sprite.player.setAccelerationY(-this.ACCELERATION - this.DRAG); //if its moving other direction
+                }
+            } else if(cursors.down.isDown) {
+                if (my.sprite.player.body.velocity.y > 0) {
+                    my.sprite.player.setAccelerationY(this.ACCELERATION);
+                } else {
+                    my.sprite.player.setAccelerationY(this.ACCELERATION + this.DRAG); //if its moving other direction
+                }
+            } else { // If no keys are down
+                my.sprite.player.setAccelerationY(0);
+                my.sprite.player.setDragY(this.DRAG);
             }
-        } else { // If no keys are down
-            my.sprite.player.setAccelerationY(0);
-            my.sprite.player.setDragY(this.DRAG);
+            my.sprite.player.setMaxVelocity(this.MAX_SPEED);
         }
-        my.sprite.player.setMaxVelocity(this.MAX_SPEED);
         //console.log("comment after movement code")
         //this.MAX_SPEED(800);
         //     // TODO: add particle following code here

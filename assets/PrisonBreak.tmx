@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="70" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="70" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="15">
  <editorsettings>
   <export target="PrisonBreak.tmj" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="PaperTiles" tilewidth="32" tileheight="32" tilecount="616" columns="28">
   <image source="tilesheet.png" width="896" height="704"/>
+  <tile id="0">
+   <properties>
+    <property name="red" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="red" type="bool" value="true"/>
+   </properties>
+  </tile>
   <tile id="4">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -33,6 +43,16 @@
   <tile id="13">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="green" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="green" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="18">
@@ -65,6 +85,16 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="28">
+   <properties>
+    <property name="red" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="red" type="bool" value="true"/>
+   </properties>
+  </tile>
   <tile id="32">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -78,6 +108,16 @@
   <tile id="41">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="green" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="green" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="46">
@@ -108,6 +148,16 @@
   <tile id="55">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="56">
+   <properties>
+    <property name="gray" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="57">
+   <properties>
+    <property name="gray" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="60">
@@ -143,6 +193,16 @@
   <tile id="77">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="84">
+   <properties>
+    <property name="gray" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="85">
+   <properties>
+    <property name="gray" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="88">
@@ -225,6 +285,16 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="168">
+   <properties>
+    <property name="blue" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="169">
+   <properties>
+    <property name="blue" type="bool" value="true"/>
+   </properties>
+  </tile>
   <tile id="172">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -263,6 +333,16 @@
   <tile id="195">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="196">
+   <properties>
+    <property name="blue" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="197">
+   <properties>
+    <property name="blue" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="200">
@@ -380,6 +460,16 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="336">
+   <properties>
+    <property name="brown" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="337">
+   <properties>
+    <property name="brown" type="bool" value="true"/>
+   </properties>
+  </tile>
   <tile id="340">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -398,6 +488,16 @@
   <tile id="355">
    <properties>
     <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="364">
+   <properties>
+    <property name="brown" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="365">
+   <properties>
+    <property name="brown" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="382">
@@ -511,18 +611,100 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="617" name="coins" tilewidth="32" tileheight="32" tilecount="1296" columns="36">
-  <image source="spritesheet-tiles-default.png" width="1152" height="1152"/>
- </tileset>
- <tileset firstgid="1913" name="coinsfixed" tilewidth="64" tileheight="64" tilecount="324" columns="18">
-  <grid orientation="orthogonal" width="16" height="16"/>
-  <image source="spritesheet-tiles-default.png" width="1152" height="1152"/>
+ <tileset firstgid="617" name="coins" tilewidth="32" tileheight="32" tilecount="324" columns="18">
+  <image source="spritesheet-tiles-default.png" width="576" height="576"/>
   <tile id="141">
    <animation>
     <frame tileid="141" duration="100"/>
     <frame tileid="159" duration="100"/>
    </animation>
   </tile>
+ </tileset>
+ <tileset firstgid="941" name="coinsfixed" tilewidth="64" tileheight="64" tilecount="82" columns="9">
+  <grid orientation="orthogonal" width="16" height="16"/>
+  <image source="spritesheet-tiles-default.png" width="576" height="576"/>
+  <tile id="0"/>
+  <tile id="1"/>
+  <tile id="2"/>
+  <tile id="3"/>
+  <tile id="4"/>
+  <tile id="5"/>
+  <tile id="6"/>
+  <tile id="7"/>
+  <tile id="8"/>
+  <tile id="9"/>
+  <tile id="10"/>
+  <tile id="11"/>
+  <tile id="12"/>
+  <tile id="13"/>
+  <tile id="14"/>
+  <tile id="15"/>
+  <tile id="16"/>
+  <tile id="17"/>
+  <tile id="18"/>
+  <tile id="19"/>
+  <tile id="20"/>
+  <tile id="21"/>
+  <tile id="22"/>
+  <tile id="23"/>
+  <tile id="24"/>
+  <tile id="25"/>
+  <tile id="26"/>
+  <tile id="27"/>
+  <tile id="28"/>
+  <tile id="29"/>
+  <tile id="30"/>
+  <tile id="31"/>
+  <tile id="32"/>
+  <tile id="33"/>
+  <tile id="34"/>
+  <tile id="35"/>
+  <tile id="36"/>
+  <tile id="37"/>
+  <tile id="38"/>
+  <tile id="39"/>
+  <tile id="40"/>
+  <tile id="41"/>
+  <tile id="42"/>
+  <tile id="43"/>
+  <tile id="44"/>
+  <tile id="45"/>
+  <tile id="46"/>
+  <tile id="47"/>
+  <tile id="48"/>
+  <tile id="49"/>
+  <tile id="50"/>
+  <tile id="51"/>
+  <tile id="52"/>
+  <tile id="53"/>
+  <tile id="54"/>
+  <tile id="55"/>
+  <tile id="56"/>
+  <tile id="57"/>
+  <tile id="58"/>
+  <tile id="59"/>
+  <tile id="60"/>
+  <tile id="61"/>
+  <tile id="62"/>
+  <tile id="63"/>
+  <tile id="64"/>
+  <tile id="65"/>
+  <tile id="66"/>
+  <tile id="67"/>
+  <tile id="68"/>
+  <tile id="69"/>
+  <tile id="70"/>
+  <tile id="71"/>
+  <tile id="72"/>
+  <tile id="73"/>
+  <tile id="74"/>
+  <tile id="75"/>
+  <tile id="76"/>
+  <tile id="77"/>
+  <tile id="78"/>
+  <tile id="79"/>
+  <tile id="80"/>
+  <tile id="141"/>
  </tileset>
  <layer id="1" name="ground" width="60" height="70">
   <data encoding="csv">
@@ -968,5 +1150,19 @@
 447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,0,0,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447
 </data>
  </layer>
- <objectgroup id="7" name="coins"/>
+ <objectgroup id="7" name="coins">
+  <object id="1" name="coin" gid="758" x="302" y="210" width="32" height="32"/>
+  <object id="2" name="coin" gid="758" x="784" y="304" width="32" height="32"/>
+  <object id="3" name="coin" gid="758" x="1156" y="510" width="32" height="32"/>
+  <object id="4" name="coin" gid="758" x="1744" y="242" width="32" height="32"/>
+  <object id="5" name="coin" gid="758" x="1332" y="1524" width="32" height="32"/>
+  <object id="6" name="coin" gid="758" x="1152" y="980" width="32" height="32"/>
+  <object id="7" name="coin" gid="758" x="818" y="974" width="32" height="32"/>
+  <object id="8" name="coin" gid="758" x="464" y="976" width="32" height="32"/>
+  <object id="9" name="coin" gid="758" x="408" y="1648" width="32" height="32"/>
+  <object id="10" name="coin" gid="758" x="644" y="1552" width="32" height="32"/>
+  <object id="11" name="coin" gid="758" x="1344" y="1794" width="32" height="32"/>
+  <object id="13" name="coin" gid="758" x="404" y="2098" width="32" height="32"/>
+  <object id="14" name="coin" gid="758" x="1796" y="882" width="32" height="32"/>
+ </objectgroup>
 </map>

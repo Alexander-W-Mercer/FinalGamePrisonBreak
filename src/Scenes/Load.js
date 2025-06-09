@@ -25,6 +25,12 @@ class Load extends Phaser.Scene {
             frameHeight: 64
         });
 
+        this.load.image("tilemap_tiles", "tilesheet.png");
+        this.load.spritesheet("coin_sheet", "spritesheet-tiles-default.png", {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+
         console.log("loaded tilemap as a spritesheet")
 
         // Oooh, fancy. A multi atlas is a texture atlas which has the textures spread
@@ -35,7 +41,7 @@ class Load extends Phaser.Scene {
         // Particle Pack asset pack.
         this.load.multiatlas("kenny-particles", "kenny-particles.json");
 
-        //this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
+        this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         console.log("another test")
 
     }

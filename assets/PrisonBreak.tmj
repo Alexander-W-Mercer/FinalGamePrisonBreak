@@ -293,7 +293,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3221225696, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3221225696, 3221225695, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3221225668, 3221225667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -497,31 +497,31 @@
                  "gid":758,
                  "height":32,
                  "id":1,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":304,
-                 "y":206
+                 "x":302,
+                 "y":210
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":2,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":790,
-                 "y":306
+                 "x":784,
+                 "y":304
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":3,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -533,121 +533,121 @@
                  "gid":758,
                  "height":32,
                  "id":4,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1742,
-                 "y":232
+                 "x":1744,
+                 "y":242
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":5,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1786,
-                 "y":864
+                 "x":1332,
+                 "y":1524
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":6,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1150,
-                 "y":990
+                 "x":1152,
+                 "y":980
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":7,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":816,
+                 "x":818,
                  "y":974
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":8,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":462,
-                 "y":978
+                 "x":464,
+                 "y":976
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":9,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":1298,
-                 "y":1520
+                 "x":408,
+                 "y":1648
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":10,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":634,
+                 "x":644,
                  "y":1552
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":11,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":414,
-                 "y":1636
-                }, 
-                {
-                 "gid":758,
-                 "height":32,
-                 "id":12,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":1346,
-                 "y":1822
+                 "x":1344,
+                 "y":1794
                 }, 
                 {
                  "gid":758,
                  "height":32,
                  "id":13,
-                 "name":"",
+                 "name":"coin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":398,
-                 "y":2028
+                 "x":404,
+                 "y":2098
+                }, 
+                {
+                 "gid":758,
+                 "height":32,
+                 "id":14,
+                 "name":"coin",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1796,
+                 "y":882
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -656,7 +656,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -675,6 +675,24 @@
          "tileheight":32,
          "tiles":[
                 {
+                 "id":0,
+                 "properties":[
+                        {
+                         "name":"red",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":1,
+                 "properties":[
+                        {
+                         "name":"red",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":4,
                  "properties":[
                         {
@@ -724,6 +742,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":14,
+                 "properties":[
+                        {
+                         "name":"green",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":15,
+                 "properties":[
+                        {
+                         "name":"green",
                          "type":"bool",
                          "value":true
                         }]
@@ -783,6 +819,24 @@
                         }]
                 }, 
                 {
+                 "id":28,
+                 "properties":[
+                        {
+                         "name":"red",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":29,
+                 "properties":[
+                        {
+                         "name":"red",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":32,
                  "properties":[
                         {
@@ -805,6 +859,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":42,
+                 "properties":[
+                        {
+                         "name":"green",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":43,
+                 "properties":[
+                        {
+                         "name":"green",
                          "type":"bool",
                          "value":true
                         }]
@@ -859,6 +931,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":56,
+                 "properties":[
+                        {
+                         "name":"gray",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":57,
+                 "properties":[
+                        {
+                         "name":"gray",
                          "type":"bool",
                          "value":true
                         }]
@@ -922,6 +1012,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":84,
+                 "properties":[
+                        {
+                         "name":"gray",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":85,
+                 "properties":[
+                        {
+                         "name":"gray",
                          "type":"bool",
                          "value":true
                         }]
@@ -1071,6 +1179,24 @@
                         }]
                 }, 
                 {
+                 "id":168,
+                 "properties":[
+                        {
+                         "name":"blue",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":169,
+                 "properties":[
+                        {
+                         "name":"blue",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":172,
                  "properties":[
                         {
@@ -1087,7 +1213,8 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":186,
                  "properties":[
@@ -1138,6 +1265,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":196,
+                 "properties":[
+                        {
+                         "name":"blue",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":197,
+                 "properties":[
+                        {
+                         "name":"blue",
                          "type":"bool",
                          "value":true
                         }]
@@ -1213,8 +1358,7 @@
                          "type":"bool",
                          "value":true
                         }]
-                },
-            
+                }, 
                 {
                  "id":250,
                  "properties":[
@@ -1351,6 +1495,24 @@
                         }]
                 }, 
                 {
+                 "id":336,
+                 "properties":[
+                        {
+                         "name":"brown",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":337,
+                 "properties":[
+                        {
+                         "name":"brown",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":340,
                  "properties":[
                         {
@@ -1382,6 +1544,24 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":364,
+                 "properties":[
+                        {
+                         "name":"brown",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":365,
+                 "properties":[
+                        {
+                         "name":"brown",
                          "type":"bool",
                          "value":true
                         }]
@@ -1574,7 +1754,8 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":475,
                  "properties":[
@@ -1595,7 +1776,7 @@
          "margin":0,
          "name":"coins",
          "spacing":0,
-         "tilecount":1296,
+         "tilecount":324,
          "tileheight":32,
          "tiles":[
                 {
@@ -1611,6 +1792,273 @@
                  "id":141
                 }],
          "tilewidth":32
+        }, 
+        {
+         "columns":9,
+         "firstgid":941,
+         "grid":
+            {
+             "height":16,
+             "orientation":"orthogonal",
+             "width":16
+            },
+         "image":"spritesheet-tiles-default.png",
+         "imageheight":576,
+         "imagewidth":576,
+         "margin":0,
+         "name":"coinsfixed",
+         "spacing":0,
+         "tilecount":82,
+         "tileheight":64,
+         "tiles":[
+                {
+                 "id":0
+                }, 
+                {
+                 "id":1
+                }, 
+                {
+                 "id":2
+                }, 
+                {
+                 "id":3
+                }, 
+                {
+                 "id":4
+                }, 
+                {
+                 "id":5
+                }, 
+                {
+                 "id":6
+                }, 
+                {
+                 "id":7
+                }, 
+                {
+                 "id":8
+                }, 
+                {
+                 "id":9
+                }, 
+                {
+                 "id":10
+                }, 
+                {
+                 "id":11
+                }, 
+                {
+                 "id":12
+                }, 
+                {
+                 "id":13
+                }, 
+                {
+                 "id":14
+                }, 
+                {
+                 "id":15
+                }, 
+                {
+                 "id":16
+                }, 
+                {
+                 "id":17
+                }, 
+                {
+                 "id":18
+                }, 
+                {
+                 "id":19
+                }, 
+                {
+                 "id":20
+                }, 
+                {
+                 "id":21
+                }, 
+                {
+                 "id":22
+                }, 
+                {
+                 "id":23
+                }, 
+                {
+                 "id":24
+                }, 
+                {
+                 "id":25
+                }, 
+                {
+                 "id":26
+                }, 
+                {
+                 "id":27
+                }, 
+                {
+                 "id":28
+                }, 
+                {
+                 "id":29
+                }, 
+                {
+                 "id":30
+                }, 
+                {
+                 "id":31
+                }, 
+                {
+                 "id":32
+                }, 
+                {
+                 "id":33
+                }, 
+                {
+                 "id":34
+                }, 
+                {
+                 "id":35
+                }, 
+                {
+                 "id":36
+                }, 
+                {
+                 "id":37
+                }, 
+                {
+                 "id":38
+                }, 
+                {
+                 "id":39
+                }, 
+                {
+                 "id":40
+                }, 
+                {
+                 "id":41
+                }, 
+                {
+                 "id":42
+                }, 
+                {
+                 "id":43
+                }, 
+                {
+                 "id":44
+                }, 
+                {
+                 "id":45
+                }, 
+                {
+                 "id":46
+                }, 
+                {
+                 "id":47
+                }, 
+                {
+                 "id":48
+                }, 
+                {
+                 "id":49
+                }, 
+                {
+                 "id":50
+                }, 
+                {
+                 "id":51
+                }, 
+                {
+                 "id":52
+                }, 
+                {
+                 "id":53
+                }, 
+                {
+                 "id":54
+                }, 
+                {
+                 "id":55
+                }, 
+                {
+                 "id":56
+                }, 
+                {
+                 "id":57
+                }, 
+                {
+                 "id":58
+                }, 
+                {
+                 "id":59
+                },
+            
+                {
+                 "id":60
+                }, 
+                {
+                 "id":61
+                }, 
+                {
+                 "id":62
+                }, 
+                {
+                 "id":63
+                }, 
+                {
+                 "id":64
+                }, 
+                {
+                 "id":65
+                }, 
+                {
+                 "id":66
+                }, 
+                {
+                 "id":67
+                }, 
+                {
+                 "id":68
+                }, 
+                {
+                 "id":69
+                }, 
+                {
+                 "id":70
+                }, 
+                {
+                 "id":71
+                }, 
+                {
+                 "id":72
+                }, 
+                {
+                 "id":73
+                }, 
+                {
+                 "id":74
+                }, 
+                {
+                 "id":75
+                }, 
+                {
+                 "id":76
+                }, 
+                {
+                 "id":77
+                }, 
+                {
+                 "id":78
+                }, 
+                {
+                 "id":79
+                }, 
+                {
+                 "id":80
+                }, 
+                {
+                 "id":141
+                }],
+         "tilewidth":64
         }],
  "tilewidth":32,
  "type":"map",
