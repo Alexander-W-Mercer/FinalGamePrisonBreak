@@ -472,14 +472,12 @@ class PrisonBreak extends Phaser.Scene {
         this.locationtext = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '20px', fill: '#3F2631'})
 
 
-        let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
+        for (const group in my.sprite.gaurds) {
+            let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
             var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
-            var fromX = Math.floor(my.sprite.gaurds.group1.gaurd.x/this.TILESIZE);
-            var fromY = Math.floor(my.sprite.gaurds.group1.gaurd.y/this.TILESIZE);
-            //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+            var fromX = Math.floor(my.sprite.gaurds[group].gaurd.x/this.TILESIZE);
+            var fromY = Math.floor(my.sprite.gaurds[group].gaurd.y/this.TILESIZE);
 
-            //console.log(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y)
-            //console.log(my.sprite.player.x, my.sprite.player.y)
             //startX, startY, endX, endY
             this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
                 if (path === null) {
@@ -487,11 +485,12 @@ class PrisonBreak extends Phaser.Scene {
                 } else {
                     console.log("Path was found, and is in array path:");
                     console.log(path);
-                    this.moveCharacter(path, my.sprite.gaurds.group1.gaurd);
+                    this.moveCharacter(path, my.sprite.gaurds[group].gaurd);
                     console.log(path)
                 }
             });
             this.finder.calculate();
+        }
     }
 
     // layersToGrid
