@@ -245,8 +245,8 @@ class PrisonBreak extends Phaser.Scene {
                     //console.log("touched a wall I did.")
                 }
                 obj1.stopFollow();
-                obj1.x = obj1.parent.x;
-                obj1.y = obj1.parent.y;
+                obj1.x = obj1.parent.gaurd.x;
+                obj1.y = obj1.parent.gaurd.y;
                 my.sprite.gaurds.group1.ray.startFollow({
                         from: 0,
                         to: 1,
@@ -286,6 +286,9 @@ class PrisonBreak extends Phaser.Scene {
 
         //Rays
         my.sprite.gaurds.group1.ray = this.add.follower(this.path1, 10, 10, "red_character");
+        console.log("this is the follower:", my.sprite.gaurds.group1.ray)
+        my.sprite.gaurds.group1.ray.x = 10;
+        my.sprite.gaurds.group1.ray.y = 10;
         
 
         // this.restartText = this.add.text(15, 10, 'Press m to restart', {fontFamily: 'MS Sans Serif',fontSize: '50px', fill: '#3F2631'})
@@ -296,28 +299,31 @@ class PrisonBreak extends Phaser.Scene {
         this.physics.add.collider(my.sprite.player, this.wallLayer, propertyCollider);
         this.physics.add.overlap(my.sprite.player, this.interactions, locationOverlap);
 
-        for (const gaurd in my.sprite.gaurds) { // set up the ray casting
-            this.physics.add.existing(my.sprite.gaurds[gaurd].ray);
-            this.physics.add.overlap(my.sprite.gaurds[gaurd].ray, this.wallLayer, propertyOverlap);
-            this.physics.add.overlap(my.sprite.gaurds[gaurd].ray, my.sprite.gaurds[gaurd], entityOverlap);
-            this.physics.add.overlap(my.sprite.gaurds[gaurd].ray, my.sprite.player, entityOverlap);
-            my.sprite.gaurds[gaurd].ray.hitWall = false;
-            my.sprite.gaurds[gaurd].ray.parent = my.sprite.gaurds[gaurd];
-            my.sprite.gaurds[gaurd].ray.body.setSize(24,24)
-            my.sprite.gaurds[gaurd].ray.setScale(0.5)
-            my.sprite.gaurds[gaurd].ray.visible = false;
-            my.sprite.gaurds[gaurd].ray.x = my.sprite.gaurds[gaurd].x;
-            my.sprite.gaurds[gaurd].ray.y = my.sprite.gaurds[gaurd].y;
-            my.sprite.gaurds[gaurd].ray.seenTimer = 0
+        for (const group in my.sprite.gaurds) { // set up the ray casting
+            console.log(my.sprite.gaurds[group].ray)
+            this.physics.add.existing(my.sprite.gaurds[group].ray);
+            this.physics.add.overlap(my.sprite.gaurds[group].ray, this.wallLayer, propertyOverlap);
+            this.physics.add.overlap(my.sprite.gaurds[group].ray, my.sprite.gaurds[group].gaurd, entityOverlap);
+            this.physics.add.overlap(my.sprite.gaurds[group].ray, my.sprite.player, entityOverlap);
+            my.sprite.gaurds[group].ray.hitWall = false;
+            my.sprite.gaurds[group].ray.parent = my.sprite.gaurds[group];
+            my.sprite.gaurds[group].ray.body.setSize(24,24)
+            my.sprite.gaurds[group].ray.setScale(0.5)
+            my.sprite.gaurds[group].ray.visible = false;
+            my.sprite.gaurds[group].ray.x = my.sprite.gaurds[group].gaurd.x;
+            my.sprite.gaurds[group].ray.y = my.sprite.gaurds[group].gaurd.y;
+            my.sprite.gaurds[group].ray.seenTimer = 0
 
-            // my.sprite.gaurds.group1.ray.startFollow({ //start the ray chasing the player
-            //             from: 0,
-            //             to: 1,
-            //             delay: 0,
-            //             duration: 100,
-            //             repeat: 0,//-1
-            //             yoyo: false
-            //         });
+            console.log("here we are")
+            my.sprite.gaurds.group1.ray.startFollow({ //start the ray chasing the player
+                        from: 0,
+                        to: 1,
+                        delay: 0,
+                        duration: 100,
+                        repeat: 0,//-1
+                        yoyo: false
+                    });
+            console.log("again")
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,34 +375,25 @@ class PrisonBreak extends Phaser.Scene {
         // debug key listener (assigned to D key)
         this.input.keyboard.on('keydown-D', () => {
 
-            my.sprite.gaurds.group1.ray.startFollow({ //start the ray chasing the player
-                        from: 0,
-                        to: 1,
-                        delay: 0,
-                        duration: 100,
-                        repeat: 0,//-1
-                        yoyo: false
-                    });
+            let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
+            var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
+            var fromX = Math.floor(my.sprite.gaurds.group1.x/this.TILESIZE);
+            var fromY = Math.floor(my.sprite.gaurds.group1.y/this.TILESIZE);
+            console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
-            // let toX = Math.floor(my.sprite.player.x/this.TILESIZE);
-            // var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
-            // var fromX = Math.floor(my.sprite.gaurds.group1.x/this.TILESIZE);
-            // var fromY = Math.floor(my.sprite.gaurds.group1.y/this.TILESIZE);
-            // console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-
-            // console.log(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y)
-            // console.log(my.sprite.player.x, my.sprite.player.y)
-            // //startX, startY, endX, endY
-            // this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
-            //     if (path === null) {
-            //         console.log("Path not found");
-            //     } else {
-            //         console.log("Path was found, and is in array path:");
-            //         console.log(path);
-            //         this.moveCharacter(path, my.sprite.gaurds.group1);
-            //     }
-            // });
-            // this.finder.calculate();
+            console.log(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y)
+            console.log(my.sprite.player.x, my.sprite.player.y)
+            //startX, startY, endX, endY
+            this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
+                if (path === null) {
+                    console.log("Path not found");
+                } else {
+                    console.log("Path was found, and is in array path:");
+                    console.log(path);
+                    this.moveCharacter(path, my.sprite.gaurds.group1);
+                }
+            });
+            this.finder.calculate();
 
             if (this.DEBUG == false) {
                 this.physics.world.drawDebug = true;
@@ -522,14 +519,6 @@ class PrisonBreak extends Phaser.Scene {
     }
 
     update() {
-        console.log(my.sprite.gaurds)
-        //my.sprite.gaurds.group1.gaurd.setAccelerationX(10);
-        console.log("curve:", this.path1.curves[0].p0.x)
-        console.log("Gaurd:", my.sprite.gaurds.group1.gaurd.x)
-        console.log("rayx: ", my.sprite.gaurds.group1.ray.x)
-        //console.log(my.sprite.player.x, my.sprite.player.y)
-        //console.log(this.cameras.main._scrollX)
-        //console.log(this.locationtext.x)
         this.locationtext.x = this.cameras.main._scrollX + 320
         this.locationtext.y = this.cameras.main._scrollY + 140 
 
