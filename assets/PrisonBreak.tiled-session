@@ -1,0 +1,79 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "PrisonBreak.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "C:/Users/zande/AppData/Local/Temp/5411233b-d35c-4ff9-9189-ef8a3c65c9fc_kenney_scribble-dungeons.zip.9fc/Tiled/sampleMap.tmx": {
+            "scale": 0.5258585858585858,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.16711486746067,
+                "y": 464.9538993469074
+            }
+        },
+        "C:/Users/zande/AppData/Local/Temp/5411233b-d35c-4ff9-9189-ef8a3c65c9fc_kenney_scribble-dungeons.zip.9fc/Tiled/sampleSheet.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/zande/CMPM 120/FinalPlatformer/assets/Newplatformertiles.tmx": {
+            "scale": 0.382375,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 2373.3246158875445,
+                "y": 895.7175547564563
+            }
+        },
+        "C:/Users/zande/CMPM 120/FinalPlatformer/assets/Newplatformertiles.tmx#KennyFullPlatformTiles": {
+            "scaleInDock": 0.5
+        },
+        "Newplatformertiles.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 602,
+                "y": 288.66666666666663
+            }
+        },
+        "Newplatformertiles.tmx#PaperTiles": {
+            "scaleInDock": 1
+        },
+        "PrisonBreak.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 434,
+                "y": 615.3333333333333
+            }
+        },
+        "PrisonBreak.tmx#PaperTiles": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/zande/CMPM 120/FinalGamePrisonBreak/assets",
+    "last.imagePath": "C:/Users/zande/CMPM 120/FinalGamePrisonBreak/assets",
+    "map.height": 60,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 60,
+    "openFiles": [
+        "PrisonBreak.tmx"
+    ],
+    "project": "PrisonBreak.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "PrisonBreak.tmx",
+        "C:/Users/zande/AppData/Local/Temp/5411233b-d35c-4ff9-9189-ef8a3c65c9fc_kenney_scribble-dungeons.zip.9fc/Tiled/sampleMap.tmx",
+        "Newplatformertiles.tmx",
+        "C:/Users/zande/CMPM 120/FinalPlatformer/assets/Newplatformertiles.tmx"
+    ],
+    "tileset.embedInMap": true
+}

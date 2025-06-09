@@ -1,12 +1,10 @@
-// Jim Whitehead
-// Created: 5/14/2025
+// Alexander Mercer with template code and help from Jim Whitehead
+// Created: 6/3/2025
 // Phaser: 3.70.0
 //
-// Particle Practice Kit
+// Prison Break Game
 //
-// An example platformer layer with coin objects.
-// The goal is to add particle effects for when the player collects a coin, and
-// for the water to have bubbles, and for when the player falls in the water.
+// A simple game about breaking free from a simply drawn prison.
 //
 
 // debug with extreme prejudice
@@ -17,23 +15,23 @@ let config = {
     parent: 'phaser-game',
     type: Phaser.CANVAS,
     render: {
-        pixelArt: true  // prevent pixel art from getting blurred when scaled
+        pixelArt: false  // prevent pixel art from getting blurred when scaled
     },
     physics: {
         default: 'arcade',
         arcade: {
             debug: false,
-            tileBias: 33,
+            tileBias: 30,
             gravity: {
                 x: 0,
                 y: 0
             }
         }
     },
-    width: 675,//1440,
-    height: 675,//900,
+    width: 1440,
+    height: 600,
     backgroundColor: '#80bbc2',
-    scene: [Load, Platformer]
+    scene: [Load, PrisonBreak]
 }
 
 var cursors;
