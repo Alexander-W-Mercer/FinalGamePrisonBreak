@@ -23,7 +23,7 @@ class PrisonBreak extends Phaser.Scene {
         this.load.image("green_character", "green_character.png")
         this.load.image("red_character", "red_character.png")
         this.load.image("purple_character", "purple_character.png")
-        //this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
+        this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         // this.load.audio('coin', 'assets/coin.wav');
         // this.load.audio('walk', 'assets/walk.wav');
         // this.load.audio('hurt', 'assets/hurt.wav');
@@ -105,29 +105,29 @@ class PrisonBreak extends Phaser.Scene {
         this.finder.setAcceptableTiles([446, 447, 448]);
 
         // Create coins from Objects layer in tilemap
-        // this.coins = this.map.createFromObjects("coins", {
-        //     name: "coin",
-        //     key: "tilemap_sheet",
-        //     frame: 141
-        // });
+        this.coins = this.map.createFromObjects("coins", {
+            name: "coin",
+            key: "tilemap_sheet",
+            frame: 141
+        });
 
-        // this.anims.create({
-        //     key: 'coinAnim',
-        //     frames: [
-        //         { key: 'tilemap_sheet', frame: 141 }, // First frame
-        //         { key: 'tilemap_sheet', frame: 159 }  // Second frame
-        //     ],
-        //     frameRate: 2,
-        //     repeat: -1
-        // });
+        this.anims.create({
+            key: 'coinAnim',
+            frames: [
+                { key: 'tilemap_sheet', frame: 141 }, // First frame
+                { key: 'tilemap_sheet', frame: 159 }  // Second frame
+            ],
+            frameRate: 2,
+            repeat: -1
+        });
         
-        // this.anims.play('coinAnim', this.coins);
+        this.anims.play('coinAnim', this.coins);
 
-        // this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
 
         // Create a Phaser group out of the array this.coins
         // This will be used for collision detection below.
-        //this.coinGroup = this.add.group(this.coins);
+        this.coinGroup = this.add.group(this.coins);
 
 
         // let oneWayCollisionProcess = (obj1, obj2) => {
@@ -179,16 +179,6 @@ class PrisonBreak extends Phaser.Scene {
         //             }
         //         }
         //     }
-
-        //     if (obj2.properties.gravity) {
-        //         //console.log("upwards")    
-        //         this.TOUCHING = true;            
-        //         return false;
-        //     } else {
-        //         this.TOUCHING = false;
-        //         return true;
-        //     }*/
-        // }
 
         let propertyCollider = (obj1, obj2) => {
             if (obj2.properties.collides) {
@@ -309,6 +299,7 @@ class PrisonBreak extends Phaser.Scene {
 
         for (const group in my.sprite.gaurds) { //set up the gaurds
             //Gaurd states
+            my.sprite.gaurds[group].shocktext = this.add.text(0, 0, '!', {fontFamily: 'Georgia',fontSize: '30px', fill: '#3F2631'})
             my.sprite.gaurds[group].gaurd.boredom = 0; //boredom
             my.sprite.gaurds[group].gaurd.chasing = false;
             my.sprite.gaurds[group].gaurd.searching = false;
@@ -624,6 +615,8 @@ class PrisonBreak extends Phaser.Scene {
         console.log("chasing:", my.sprite.gaurds.group1.gaurd.chasing)
         console.log("searching:", my.sprite.gaurds.group1.gaurd.searching)
         for (const group in my.sprite.gaurds) {
+            my.sprite.gaurds[group].shocktext.x = my.sprite.gaurds[group].gaurd.x - 5
+            my.sprite.gaurds[group].shocktext.y = my.sprite.gaurds[group].gaurd.y - 15
             if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.targetX && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.targetY) {
                 if (my.sprite.gaurds[group].gaurd.boredom < 0) {
                     // console.log("gaurd is bored")
@@ -672,13 +665,17 @@ class PrisonBreak extends Phaser.Scene {
                     my.sprite.gaurds[group].gaurd.searching = true;
                     my.sprite.gaurds[group].line.strokeColor = 6157634
                     my.sprite.gaurds[group].gaurd.lastSeenPlayer = [Math.floor(my.sprite.player.x/this.TILESIZE), Math.floor(my.sprite.player.y/this.TILESIZE)]
+                    my.sprite.gaurds[group].shocktext.text = '!'
                 }
             } else if (my.sprite.gaurds[group].ray.seenTimer > 0) {
                 my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(200,400);
                 my.sprite.gaurds[group].line.strokeColor = 16104514
+                my.sprite.gaurds[group].shocktext.text = '?'
+                my.sprite.gaurds[group].shocktext.x = my.sprite.gaurds[group].shocktext.x - 2
             } else {
                 my.sprite.gaurds[group].gaurd.chasing = false;
                 my.sprite.gaurds[group].line.strokeColor = 16711680
+                my.sprite.gaurds[group].shocktext.text = ''
             }
             
         }
