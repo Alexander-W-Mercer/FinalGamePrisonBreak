@@ -10,6 +10,7 @@ class Load extends Phaser.Scene {
         //this.load.atlas("PrisonBreak_characters", "tilemap-characters-packed.png", "tilemap-characters-packed.json");
         this.load.image("green_character", "green_character.png")
         this.load.image("red_character", "red_character.png")
+        this.load.image("purple_character", "purple_character.png")
 
         console.log("here we are at the start")
         // Load tilemap information

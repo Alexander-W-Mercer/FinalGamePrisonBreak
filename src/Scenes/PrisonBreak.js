@@ -22,6 +22,7 @@ class PrisonBreak extends Phaser.Scene {
     preload() {
         this.load.image("green_character", "green_character.png")
         this.load.image("red_character", "red_character.png")
+        this.load.image("purple_character", "purple_character.png")
         //this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         // this.load.audio('coin', 'assets/coin.wav');
         // this.load.audio('walk', 'assets/walk.wav');
@@ -269,6 +270,8 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.gaurds.group5 = {}
         my.sprite.gaurds.group6 = {}
         my.sprite.gaurds.group7 = {}
+        my.sprite.gaurds.group8 = {}
+        my.sprite.gaurds.group9 = {}
         //this.physics.add.overlap(my.sprite.gaurds.group1.ray, this.wallLayer, propertyOverlapper);
 
         // Find water tiles
@@ -288,6 +291,8 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.gaurds.group5.gaurd = this.physics.add.sprite(45 * this.TILESIZE - (this.TILESIZE/2), 42 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
         my.sprite.gaurds.group6.gaurd = this.physics.add.sprite(9 * this.TILESIZE - (this.TILESIZE/2), 40 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
         my.sprite.gaurds.group7.gaurd = this.physics.add.sprite(6 * this.TILESIZE - (this.TILESIZE/2), 60 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group8.gaurd = this.physics.add.sprite(47 * this.TILESIZE - (this.TILESIZE/2), 30 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
+        my.sprite.gaurds.group9.gaurd = this.physics.add.sprite(20 * this.TILESIZE - (this.TILESIZE/2), 47 * this.TILESIZE - (this.TILESIZE/2), "purple_character", "purple_character.png");
 
         //Gaurd Routes
         my.sprite.gaurds.group1.gaurd.route = [[8,8], [11, 8], [8, 31], [11, 31]] //cellblock gaurd
@@ -297,6 +302,8 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.gaurds.group5.gaurd.route = [[44,41], [36, 41], [36, 38], [44, 38]] // storage gaurd
         my.sprite.gaurds.group6.gaurd.route = [[8,39], [8, 47], [16, 47], [15, 39]] //visitors gaurd
         my.sprite.gaurds.group7.gaurd.route = [[5,59], [16, 60], [8, 67], [16, 66]] //outside gaurd
+        my.sprite.gaurds.group8.gaurd.route = [[34,44], [46, 46], [52, 33], [36, 30], [35, 20], [47, 30]] //right side gaurd
+        my.sprite.gaurds.group9.gaurd.route = [[25,44], [25, 47], [28, 47], [28, 44]] //warden
 
         my.sprite.player.body.setSize(24,24)
 
@@ -472,7 +479,7 @@ class PrisonBreak extends Phaser.Scene {
         
 
         //this.animatedTiles.init(this.map);
-        this.locationtext = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '20px', fill: '#3F2631'})
+        this.locationtext = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
 
 
         for (const group in my.sprite.gaurds) {
@@ -660,7 +667,7 @@ class PrisonBreak extends Phaser.Scene {
             if (my.sprite.gaurds[group].ray.seenTimer > 2) {
                 console.log("YOU ARE BEING CHASED")
                 console.log(Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]))
-                if (Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]) < 320) {
+                if (Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]) < 480) {
                     my.sprite.gaurds[group].gaurd.chasing = true;
                     my.sprite.gaurds[group].gaurd.searching = true;
                     my.sprite.gaurds[group].line.strokeColor = 6157634
@@ -695,8 +702,8 @@ class PrisonBreak extends Phaser.Scene {
         // console.log("playery", my.sprite.player.y)
         // console.log("gaurdx", my.sprite.gaurds.group1.gaurd.x)
         // console.log("gaurdy", my.sprite.gaurds.group1.gaurd.y)
-        this.locationtext.x = this.cameras.main._scrollX + 320
-        this.locationtext.y = this.cameras.main._scrollY + 140 
+        this.locationtext.x = this.cameras.main._scrollX + 20
+        this.locationtext.y = this.cameras.main._scrollY + 20 
 
         
         // if (this.WONGAME) {
