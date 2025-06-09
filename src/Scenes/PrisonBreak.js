@@ -304,7 +304,10 @@ class PrisonBreak extends Phaser.Scene {
             //Gaurd states
             my.sprite.gaurds[group].gaurd.boredom = 0; //boredom
             my.sprite.gaurds[group].gaurd.chasing = false;
+            my.sprite.gaurds[group].gaurd.searching = false;
             my.sprite.gaurds[group].gaurd.currentRoute = 0;
+            my.sprite.gaurds[group].gaurd.lastSeenPlayer = [];
+
 
             //Debug Lines
             my.sprite.gaurds[group].line = this.add.line(20, 20, my.sprite.player.x, my.sprite.player.y, 200, 200, 0xff0000, 1); // WHY DOES THIS WORK??? I MESSED WITH THIS FOR LIKE 3 HOURS WHY DOES THIS WORK. THIS SHOULDN'T WORK.
@@ -535,11 +538,9 @@ class PrisonBreak extends Phaser.Scene {
     }
 
     moveCharacter(path, character) { //TAKEN (and heavily modified) FROM Professor WHITEHEADS PATHFINDING ASSIGNMENT
-        // Sets up tween
-        var tween = {};
         let urgency = 100;
 
-        if (character.chasing == true) {
+        if (character.chasing == true || character.searching == true) {
             urgency = 100;
         } else {
             urgency = 400;
@@ -568,24 +569,29 @@ class PrisonBreak extends Phaser.Scene {
 
     nextstep(gaurd) {
 
-        console.log("got new step")
-        console.log(gaurd.chasing)
+        //console.log("got new step")
+        //console.log(gaurd.chasing)
         if (gaurd.chasing == true) {
             var toX = Math.floor(my.sprite.player.x/this.TILESIZE);
             var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
             var fromX = Math.floor(gaurd.x/this.TILESIZE);
             var fromY = Math.floor(gaurd.y/this.TILESIZE);
-        } else {
-            console.log("look here:")
-            console.log(gaurd)
-            console.log("boredom:", gaurd.boredom)
-            console.log("gaurdcurrentrouteNum:", gaurd.currentRoute)
-            console.log("gaurdcurrentroute:", gaurd.route[gaurd.currentRoute])
-            console.log("length:", gaurd.route.length)
-            console.log("x:", gaurd.route[gaurd.currentRoute][0])
-            console.log("y:", gaurd.route[gaurd.currentRoute][1])
+        } else if (gaurd.searching == false){
+            // console.log("look here:")
+            // console.log(gaurd)
+            // console.log("boredom:", gaurd.boredom)
+            // console.log("gaurdcurrentrouteNum:", gaurd.currentRoute)
+            // console.log("gaurdcurrentroute:", gaurd.route[gaurd.currentRoute])
+            // console.log("length:", gaurd.route.length)
+            // console.log("x:", gaurd.route[gaurd.currentRoute][0])
+            // console.log("y:", gaurd.route[gaurd.currentRoute][1])
             var toX = gaurd.route[gaurd.currentRoute][0];
             var toY = gaurd.route[gaurd.currentRoute][1];
+            var fromX = Math.floor(gaurd.x/this.TILESIZE);
+            var fromY = Math.floor(gaurd.y/this.TILESIZE);
+        } else {
+            var toX = gaurd.lastSeenPlayer[0];
+            var toY = gaurd.lastSeenPlayer[1];
             var fromX = Math.floor(gaurd.x/this.TILESIZE);
             var fromY = Math.floor(gaurd.y/this.TILESIZE);
         }
@@ -608,15 +614,17 @@ class PrisonBreak extends Phaser.Scene {
 
     update() {
         //Gaurd AI
+        console.log("chasing:", my.sprite.gaurds.group1.gaurd.chasing)
+        console.log("searching:", my.sprite.gaurds.group1.gaurd.searching)
         for (const group in my.sprite.gaurds) {
             if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.targetX && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.targetY) {
                 if (my.sprite.gaurds[group].gaurd.boredom < 0) {
-                    console.log("gaurd is bored")
-                    console.log(my.sprite.gaurds[group].gaurd.x)
-                    console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][0] * this.TILESIZE + (this.TILESIZE/2))
-                    console.log(my.sprite.gaurds[group].gaurd.y)
-                    console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
-                    console.log(my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
+                    // console.log("gaurd is bored")
+                    // console.log(my.sprite.gaurds[group].gaurd.x)
+                    // console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][0] * this.TILESIZE + (this.TILESIZE/2))
+                    // console.log(my.sprite.gaurds[group].gaurd.y)
+                    // console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
+                    // console.log(my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
                     if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][0] * this.TILESIZE + (this.TILESIZE/2) && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2)) {
                         console.log("reached destination")
                         if (my.sprite.gaurds[group].gaurd.currentRoute >= my.sprite.gaurds[group].gaurd.route.length -1) {
@@ -625,6 +633,7 @@ class PrisonBreak extends Phaser.Scene {
                             my.sprite.gaurds[group].gaurd.currentRoute++;
                         }
                     }
+                    my.sprite.gaurds[group].gaurd.searching = false;
                     my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(100,400);
                 } else {
                     my.sprite.gaurds[group].gaurd.boredom--;
@@ -649,10 +658,16 @@ class PrisonBreak extends Phaser.Scene {
 
             //check if player is within sightline or not
             if (my.sprite.gaurds[group].ray.seenTimer > 2) {
-                //console.log("YOU ARE BEING CHASED")
-                my.sprite.gaurds[group].gaurd.chasing = true;
-                my.sprite.gaurds[group].line.strokeColor = 6157634
+                console.log("YOU ARE BEING CHASED")
+                console.log(Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]))
+                if (Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]) < 320) {
+                    my.sprite.gaurds[group].gaurd.chasing = true;
+                    my.sprite.gaurds[group].gaurd.searching = true;
+                    my.sprite.gaurds[group].line.strokeColor = 6157634
+                    my.sprite.gaurds[group].gaurd.lastSeenPlayer = [Math.floor(my.sprite.player.x/this.TILESIZE), Math.floor(my.sprite.player.y/this.TILESIZE)]
+                }
             } else if (my.sprite.gaurds[group].ray.seenTimer > 0) {
+                my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(200,400);
                 my.sprite.gaurds[group].line.strokeColor = 16104514
             } else {
                 my.sprite.gaurds[group].gaurd.chasing = false;
