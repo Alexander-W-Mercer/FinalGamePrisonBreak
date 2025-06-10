@@ -9,6 +9,21 @@ class PrisonBreak extends Phaser.Scene {
         this.load.image("purple_character", "purple_character.png")
         this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         this.load.audio('coin', 'assets/coin.wav');
+
+        this.load.audio('walk1', 'assets/walk1.wav');
+        this.load.audio('walk2', 'assets/walk2.wav');
+        this.load.audio('walk3', 'assets/walk3.wav');
+        this.load.audio('walk4', 'assets/walk4.wav');
+
+        this.load.audio('altwalk1', 'assets/altwalk1.wav');
+        this.load.audio('altwalk2', 'assets/altwalk2.wav');
+        this.load.audio('altwalk3', 'assets/altwalk3.wav');
+        this.load.audio('altwalk4', 'assets/altwalk4.wav');
+
+        this.load.audio('grasswalk1', 'assets/grasswalk1.wav');
+        this.load.audio('grasswalk2', 'assets/grasswalk2.wav');
+        this.load.audio('grasswalk3', 'assets/grasswalk3.wav');
+        this.load.audio('grasswalk4', 'assets/grasswalk4.wav');
         // this.load.audio('walk', 'assets/walk.wav');
         // this.load.audio('hurt', 'assets/hurt.wav');
     }
@@ -16,7 +31,6 @@ class PrisonBreak extends Phaser.Scene {
     init() {
         
         // variables and settings
-        this.WALKTIME = 0;
         this.FROZENX = 0;
         this.FROZENY = 0;
         this.ACCELERATION = 800;
@@ -42,7 +56,7 @@ class PrisonBreak extends Phaser.Scene {
 
     create() {
         this.coinSound = this.sound.add('coin');
-        // this.walkSound = this.sound.add('walk');
+        this.walkSound = [this.sound.add('walk1'),this.sound.add('walk2'),this.sound.add('walk3'),this.sound.add('walk4'),this.sound.add('altwalk1'),this.sound.add('altwalk2'),this.sound.add('altwalk3'),this.sound.add('altwalk4'),this.sound.add('grasswalk1'),this.sound.add('grasswalk2'),this.sound.add('grasswalk3'),this.sound.add('grasswalk4')]
         // this.jumpSound = this.sound.add('jump');
         // this.gravitySound = this.sound.add('gravitySwap');
         // this.hurtSound = this.sound.add('hurt');
@@ -54,6 +68,8 @@ class PrisonBreak extends Phaser.Scene {
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("PaperTiles", "tilemap_tiles");
+
+        
 
         // Create a layer
         this.groundLayer = this.map.createLayer("ground", this.tileset, 0, 0);
@@ -127,45 +143,53 @@ class PrisonBreak extends Phaser.Scene {
             //console.log("this is working currently")
             //console.log(obj2.properties)
             if (obj2.properties.hallway) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Hallway';
+                this.LocationText.text = 'Location: Hallway';
             } else if (obj2.properties.cellblocks) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Cellblocks';
+                this.LocationText.text = 'Location: Cellblocks';
             } else if (obj2.properties.cafeteria) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Cafeteria';
+                this.LocationText.text = 'Location: Cafeteria';
             } else if (obj2.properties.courtyard) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Courtyard';
+                this.LocationText.text = 'Location: Courtyard';
             } else if (obj2.properties.gaurdquarters) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Gaurd Quarters';
+                this.LocationText.text = 'Location: Gaurd Quarters';
             } else if (obj2.properties.solitary) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Solitary Confinement';
+                this.LocationText.text = 'Location: Solitary Confinement';
             } else if (obj2.properties.showers) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Showers';
+                this.LocationText.text = 'Location: Showers';
             } else if (obj2.properties.storage) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Storage';
+                this.LocationText.text = 'Location: Storage';
             } else if (obj2.properties.visitors) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Visitors Booth';
+                this.LocationText.text = 'Location: Visitors Booth';
             } else if (obj2.properties.wardens) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Wardens Office';
+                this.LocationText.text = 'Location: Wardens Office';
             } else if (obj2.properties.lobby) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Front Lobby';
+                this.LocationText.text = 'Location: Front Lobby';
             } else if (obj2.properties.outside) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.locationtext.text = 'Location: Outside';
+                this.LocationText.text = 'Location: Outside';
+            } else if (obj2.properties.winGame) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+                this.LocationText.text = 'Location: Freedom!';
+                this.winGame(); 
             }
         }
 
         let groundOverlap = (obj1, obj2) => {
             //console.log("this is working currently")
             //console.log(obj2.properties)
-            console.log("overlapping currently")
+            //console.log("overlapping currently")
             if (obj2.properties.red) {
+                my.sprite.player.floorMaterial = "solid";
                 this.cameras.main.setBackgroundColor('#c49595');
             } else if (obj2.properties.green) {
+                my.sprite.player.floorMaterial = "grass";
                 this.cameras.main.setBackgroundColor('#86c280');
             } else if (obj2.properties.gray) {
+                my.sprite.player.floorMaterial = "soft";
                 this.cameras.main.setBackgroundColor('#c7a1cc');
             } else if (obj2.properties.blue) {
+                my.sprite.player.floorMaterial = "soft";
                 this.cameras.main.setBackgroundColor('#80bbc2');
             } else if (obj2.properties.brown) {
+                my.sprite.player.floorMaterial = "solid";
                 this.cameras.main.setBackgroundColor('#c2a380');
             }
         }
@@ -201,7 +225,9 @@ class PrisonBreak extends Phaser.Scene {
         let enemyOverlap = (obj1, obj2) => {
             if (obj2 == my.sprite.player) { // If the player has been touched by the ray:
                 console.log("hit enemy")
-                this.lostGame()
+                if (this.GAMEOVER == false) {
+                    this.lostGame()
+                }
             }
             this.GAMEOVER = true;
         }
@@ -224,9 +250,22 @@ class PrisonBreak extends Phaser.Scene {
         //     return tile.properties.water == true;
         // });
 
+        //Walking particles
+        my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
+            frame: ['smoke_01.png','smoke_02.png','smoke_03.png','smoke_04.png','smoke_05.png','smoke_06.png','smoke_07.png','smoke_08.png', 'smoke_09.png'],
+            random: true,
+            scale: {start: 0.06, end: 0.03},
+            maxAliveParticles: 3,
+            lifespan: 150,
+            alpha: {start: 1, end: 0.1}, 
+        });
+        my.vfx.walking.stop();
+
         // // set up player avatar
         my.sprite.player = this.physics.add.sprite(160, 160, "green_character", "green_character.png");
         my.sprite.player.setCollideWorldBounds(true);
+        my.sprite.player.coinCount = 0;
+        my.sprite.player.footsteptimer = 0;
 
         //Gaurds
         my.sprite.gaurds.group1.gaurd = this.physics.add.sprite(9 * this.TILESIZE - (this.TILESIZE/2), 9 * this.TILESIZE - (this.TILESIZE/2), "red_character", "red_character.png");
@@ -344,14 +383,8 @@ class PrisonBreak extends Phaser.Scene {
             my.vfx.coin.start();
             this.coinSound.play();
 
-            //my.vfx.coin.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-            ////////////////////
-            // TODO: start the coin collect particle effect here
-            ////////////////////
-            //console.log("overlap")
-            obj2.destroy(); // remove coin on overlap
-            //console.log("overlap complete")
-            //my.vfx.coin.stop();
+            obj2.destroy();
+            my.sprite.player.coinCount++;
 
         });
 
@@ -382,40 +415,11 @@ class PrisonBreak extends Phaser.Scene {
 
         }, this);
 
+
+        //Restart Game
         this.input.keyboard.on('keydown-R', () => {
-
             this.scene.restart()
-
         }, this);
-
-
-        // TODO: Add movement vfx here
-        // my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
-        //     frame: ['smoke_01.png','smoke_02.png','smoke_03.png','smoke_04.png','smoke_05.png','smoke_06.png','smoke_07.png','smoke_08.png', 'smoke_09.png'],
-        //     // TODO: Try: add random: true
-        //     random: true,
-        //     scale: {start: 0.03, end: 0.1},
-        //     maxAliveParticles: 3,
-        //     lifespan: 150,
-        //     // TODO: Try: gravityY: -400,
-        //     gravityY: -200,
-        //     alpha: {start: 1, end: 0.1}, 
-        // });
-
-        // my.vfx.jumping = this.add.particles(0, 0, "kenny-particles", {
-        //     frame: ['circle_03.png'],
-        //     // TODO: Try: add random: true
-        //     random: true,
-        //     scale: {start: 0.05, end: 0.2},
-        //     maxAliveParticles: 1,
-        //     lifespan: 150,
-        //     // TODO: Try: gravityY: -400,
-        //     gravityY: 0,
-        //     alpha: {start: 1, end: 0.1}, 
-        // });
-
-        // my.vfx.walking.stop();
-        // my.vfx.jumping.stop();
         
 
         // Simple camera to follow player
@@ -425,12 +429,6 @@ class PrisonBreak extends Phaser.Scene {
         this.cameras.main.setZoom(this.SCALE);
         this.cameras.main.rotation = 0
         console.log(this.cameras.main)
-
-        //this.locationtext.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
-        
-
-        //this.animatedTiles.init(this.map);
-        this.locationtext = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
 
 
         for (const group in my.sprite.gaurds) {
@@ -453,8 +451,10 @@ class PrisonBreak extends Phaser.Scene {
             this.finder.calculate();
         }
 
-        //Death Screen
+        //text & death screen
         my.sprite.deathRectangle = this.add.rectangle(750, 375, 1500, 750, 0x32a852, 1);
+        this.coinText = this.add.text(0, 0, 'Coins Collected:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.LocationText = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
         this.GameOverText = this.add.text(0, 0, 'You Have Been Caught.', {fontFamily: 'Georgia',fontSize: '120px', fill: '#3F2631'})
         this.restartText = this.add.text(0, 0, 'Press R to restart Game', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
         this.GameOverText.alpha = 0;
@@ -497,8 +497,8 @@ class PrisonBreak extends Phaser.Scene {
             i++;
         }
 
-        console.log("this is the grid: ====================")
-        console.log(grid)
+        //console.log("this is the grid: ====================")
+        //console.log(grid)
 
 
         return grid;
@@ -580,31 +580,74 @@ class PrisonBreak extends Phaser.Scene {
     }
 
     lostGame() {
+        this.GameOverText.x = this.cameras.main._scrollX + 80
+        my.sprite.player.setAccelerationX(0);
+        my.sprite.player.setAccelerationY(0);
+        my.sprite.player.setMaxVelocity(0);
+        this.GameOverText.alpha = 1;
+        this.restartText.alpha = 1;
+        console.log("game over text:", this.GameOverText, "------------------------------")
+        my.sprite.deathRectangle.setFillStyle(0xa83e32, 1.0)
+        my.sprite.deathRectangle.alpha = 1;
+    }
+
+    winGame() {
+        console.log("game over text:", this.GameOverText, "------------------------------")
+        this.GameOverText.text = "You have escaped!"
+        this.GameOverText.x = this.cameras.main._scrollX + 240
         this.GameOverText.alpha = 1;
         this.restartText.alpha = 1;
         my.sprite.deathRectangle.alpha = 1;
+        this.GAMEOVER = true;
     }
 
 
     update() {
-        //footstep sound effects:
-        
+        //console.log("footstepTimer:", my.sprite.player.footsteptimer)
+        //footstep particle & sound effects:
+        //my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+        //console.log(my.sprite.player.body.speed)
+        if (my.sprite.player.body.speed == 0) {
+            my.vfx.walking.stop();
+        }
+        //console.log("maxspeed:", this.MAX_SPEED)
+        if (my.sprite.player.footsteptimer > 23 - (this.MAX_SPEED/300)*10) { //my.sprite.player.footsteptimer/2 > 250 - my.sprite.player.body.speed/1.5
+            //console.log("reset")
+            
+            my.vfx.walking.startFollow(my.sprite.player, 0, 0, false);
 
+            //console.log(my.vfx.walking.startFollow)
+
+            my.vfx.walking.start();
+            //console.log("reset footsteptimer")
+            my.sprite.player.footsteptimer = 0;
+            let playsound = 0;
+            switch (my.sprite.player.floorMaterial) {
+                case "solid":
+                    playsound = Phaser.Math.RND.between(0,3);
+                    break;
+                case "soft":
+                    playsound = Phaser.Math.RND.between(4,7);
+                    break;
+                case "grass":
+                    playsound = Phaser.Math.RND.between(8,11);
+                    break;
+
+            }
+            //console.log("speed:", my.sprite.player.body.speed) 
+            if (my.sprite.player.body.speed > 200) {
+                this.walkSound[playsound].play();
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        //Gaurd AI
-        //console.log("chasing:", my.sprite.gaurds.group1.gaurd.chasing)
-        //console.log("searching:", my.sprite.gaurds.group1.gaurd.searching)
+        //Gaurd Pathfinding Logic
         for (const group in my.sprite.gaurds) {
             my.sprite.gaurds[group].shocktext.x = my.sprite.gaurds[group].gaurd.x - 5
             my.sprite.gaurds[group].shocktext.y = my.sprite.gaurds[group].gaurd.y - 15
             if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.targetX && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.targetY) {
                 if (my.sprite.gaurds[group].gaurd.boredom < 0) {
-                    // console.log("gaurd is bored")
-                    // console.log(my.sprite.gaurds[group].gaurd.x)
-                    // console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][0] * this.TILESIZE + (this.TILESIZE/2))
-                    // console.log(my.sprite.gaurds[group].gaurd.y)
-                    // console.log(my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
-                    // console.log(my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2))
                     if (my.sprite.gaurds[group].gaurd.x == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][0] * this.TILESIZE + (this.TILESIZE/2) && my.sprite.gaurds[group].gaurd.y == my.sprite.gaurds[group].gaurd.route[my.sprite.gaurds[group].gaurd.currentRoute][1] * this.TILESIZE + (this.TILESIZE/2)) {
                         console.log("reached destination")
                         if (my.sprite.gaurds[group].gaurd.currentRoute >= my.sprite.gaurds[group].gaurd.route.length -1) {
@@ -622,7 +665,7 @@ class PrisonBreak extends Phaser.Scene {
 
             }
 
-            // update the ray cast path starts and ends
+            // update the ray cast path start and end points
             my.sprite.gaurds[group].path.startPoint.x = my.sprite.gaurds[group].gaurd.x
             my.sprite.gaurds[group].path.startPoint.y = my.sprite.gaurds[group].gaurd.y
             my.sprite.gaurds[group].path.curves[0].p0.x = my.sprite.gaurds[group].gaurd.x
@@ -665,64 +708,39 @@ class PrisonBreak extends Phaser.Scene {
             }
 
         }
-        //console.log("--------------------------------")
-        //console.log(this.tweens.tweens)
-        // console.log("The path stuff:")
-        // console.log("path:", this.path1)
-        // console.log("startx", this.path1.curves[0].p0.x)
-        // console.log("starty", this.path1.curves[0].p0.y)
-        // console.log("endx", this.path1.curves[0].p1.x)
-        // console.log("endy", this.path1.curves[0].p1.y)
-        // console.log("rayx", my.sprite.gaurds.group1.ray.x)
-        // console.log("rayy", my.sprite.gaurds.group1.ray.y)
-        // console.log("playerx", my.sprite.player.x)
-        // console.log("playery", my.sprite.player.y)
-        // console.log("gaurdx", my.sprite.gaurds.group1.gaurd.x)
-        // console.log("gaurdy", my.sprite.gaurds.group1.gaurd.y)
-        this.locationtext.x = this.cameras.main._scrollX + 20
-        this.locationtext.y = this.cameras.main._scrollY + 20 
 
-        this.GameOverText.x = this.cameras.main._scrollX + 80
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //Text & Death Screen tracking
+        this.LocationText.x = this.cameras.main._scrollX + 20
+        this.LocationText.y = this.cameras.main._scrollY + 20 
+        this.coinText.x = this.cameras.main._scrollX + 1050
+        this.coinText.y = this.cameras.main._scrollY + 20
+        this.coinText.text = 'Coins Collected: ' + my.sprite.player.coinCount + '/15';
+
+        if (this.GAMEOVER == false) {
+            this.GameOverText.x = this.cameras.main._scrollX + 80
+        } else {
+            for (const group in my.sprite.gaurds) {
+                my.sprite.gaurds[group].gaurd.x = 0;
+                my.sprite.gaurds[group].gaurd.y = 0;
+            }
+        }
         this.GameOverText.y = this.cameras.main._scrollY + 120
         this.restartText.x = this.cameras.main._scrollX + 500
         this.restartText.y = this.cameras.main._scrollY + 240
         my.sprite.deathRectangle.x  = this.cameras.main._scrollX + 750
         my.sprite.deathRectangle.y  = this.cameras.main._scrollY + 375
 
-        
-        // if (this.WONGAME) {
-        //     my.sprite.player.x = this.FROZENX;
-        //     my.sprite.player.y = this.FROZENY;
-        //     this.winText.alpha = 1;
-        //     this.restartText.alpha = 1;
-        // }
-        // this.winText.x = my.sprite.player.x - 650;
-        // this.winText.y = my.sprite.player.y - 100;
-        // this.restartText.x = my.sprite.player.x - 500;
-        // this.restartText.y = my.sprite.player.y + 150;
-        
-        // my.vfx.jumping.stop();
-        // console.log("---\n")
-        // console.log("TOUCHING:")
-        // if (this.TOUCHING == false) {
-        //     this.CHANGEDGRAV = false;
-        // }
-        // console.log(this.TOUCHING)
-        // console.log("CHANGEDGRAV:")
-        // console.log(this.CHANGEDGRAV)
-        // this.TOUCHING = false;
-        // //console.log(this.TOUCHING)
-        // //console.log(this.GRAVITYDIRECTION)
-        // //this.worldupsideDown()
-        // //this.worldrightsideUp()
-        // if (this.GRAVITYDIRECTION == 1) {
-        //     this.worldupsideDown()
-        // } else {
-        //     this.worldrightsideUp()
-        // }
-        // my.vfx.water.startFollow(this.waterTiles[Math.floor(Math.random() * this.waterTiles.length)], 0, 0, false);
-        //console.log(my.sprite.player.body.velocity.x)
+
+
+        //Movement
         if (this.GAMEOVER == false) {
+
+            if(my.sprite.player.body.speed > 55) {
+                //console.log('speed:', my.sprite.player.body.speed )
+                my.sprite.player.footsteptimer++;
+            }
 
             if(cursors.left.isDown) {
                 if (my.sprite.player.body.velocity.x < 0) {
@@ -758,10 +776,10 @@ class PrisonBreak extends Phaser.Scene {
                 my.sprite.player.setDragY(this.DRAG);
             }
             my.sprite.player.setMaxVelocity(this.MAX_SPEED);
+
         }
-        //console.log("comment after movement code")
-        //this.MAX_SPEED(800);
-        //     // TODO: add particle following code here
+
+        
 
         //     my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth/2-10, my.sprite.player.displayHeight/2-5 - (60 * this.GRAVITYDIRECTION), false);
 
