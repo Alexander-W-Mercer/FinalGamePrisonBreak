@@ -9,6 +9,7 @@ class PrisonBreak extends Phaser.Scene {
         this.load.image("purple_character", "purple_character.png")
         this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         this.load.audio('coin', 'assets/coin.wav');
+        this.load.audio('hurt', 'assets/hurt.wav');
 
         this.load.audio('walk1', 'assets/walk1.wav');
         this.load.audio('walk2', 'assets/walk2.wav');
@@ -24,8 +25,6 @@ class PrisonBreak extends Phaser.Scene {
         this.load.audio('grasswalk2', 'assets/grasswalk2.wav');
         this.load.audio('grasswalk3', 'assets/grasswalk3.wav');
         this.load.audio('grasswalk4', 'assets/grasswalk4.wav');
-        // this.load.audio('walk', 'assets/walk.wav');
-        // this.load.audio('hurt', 'assets/hurt.wav');
     }
 
     init() {
@@ -56,10 +55,9 @@ class PrisonBreak extends Phaser.Scene {
 
     create() {
         this.coinSound = this.sound.add('coin');
+        this.hurtSound = this.sound.add('hurt');
         this.walkSound = [this.sound.add('walk1'),this.sound.add('walk2'),this.sound.add('walk3'),this.sound.add('walk4'),this.sound.add('altwalk1'),this.sound.add('altwalk2'),this.sound.add('altwalk3'),this.sound.add('altwalk4'),this.sound.add('grasswalk1'),this.sound.add('grasswalk2'),this.sound.add('grasswalk3'),this.sound.add('grasswalk4')]
-        // this.jumpSound = this.sound.add('jump');
-        // this.gravitySound = this.sound.add('gravitySwap');
-        // this.hurtSound = this.sound.add('hurt');
+
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
         this.map = this.add.tilemap("PrisonBreak", this.TILESIZE, this.TILESIZE, 70, 60); //should this be 18 / 18 or 64 /64 ? maybe test that me idk
@@ -68,8 +66,6 @@ class PrisonBreak extends Phaser.Scene {
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("PaperTiles", "tilemap_tiles");
-
-        
 
         // Create a layer
         this.groundLayer = this.map.createLayer("ground", this.tileset, 0, 0);
@@ -87,6 +83,8 @@ class PrisonBreak extends Phaser.Scene {
             collides: true
         });
         
+
+        /////////////////////////////////////////////////////////////// GRID MAKING FOR PATH FINDING
         let prisonGrid = this.layersToGrid([this.walkables]);
 
         this.finder = new EasyStar.js();
@@ -98,6 +96,8 @@ class PrisonBreak extends Phaser.Scene {
         this.finder.setGrid(prisonGrid);
 
         this.finder.setAcceptableTiles([446, 447, 448]);
+
+        /////////////////////////////////////////////////////////////
 
         // Create coins from Objects layer in tilemap
         console.log("making objects from this.map...")
@@ -126,6 +126,7 @@ class PrisonBreak extends Phaser.Scene {
         // This will be used for collision detection below.
         this.coinGroup = this.add.group(this.coins);
 
+        /////////////////////////////////////////////////// OVERLAP AND COLLISION DETECTORS
         let propertyCollider = (obj1, obj2) => {
             if (obj2.properties.collides) {
                 //console.log("collision!");
@@ -139,40 +140,40 @@ class PrisonBreak extends Phaser.Scene {
             }
         }
 
-        let locationOverlap = (obj1, obj2) => {
+        let locationOverlap = (obj1, obj2) => {        // I should have made this a switch, but ah well. Forgot that existed at the time
             //console.log("this is working currently")
             //console.log(obj2.properties)
-            if (obj2.properties.hallway) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            if (obj2.properties.hallway) { 
                 this.LocationText.text = 'Location: Hallway';
-            } else if (obj2.properties.cellblocks) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.cellblocks) {
                 this.LocationText.text = 'Location: Cellblocks';
-            } else if (obj2.properties.cafeteria) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.cafeteria) { 
                 this.LocationText.text = 'Location: Cafeteria';
-            } else if (obj2.properties.courtyard) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.courtyard) {
                 this.LocationText.text = 'Location: Courtyard';
-            } else if (obj2.properties.gaurdquarters) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.gaurdquarters) { 
                 this.LocationText.text = 'Location: Gaurd Quarters';
-            } else if (obj2.properties.solitary) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
-                this.LocationText.text = 'Location: Solitary Confinement';
-            } else if (obj2.properties.showers) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.solitary) {
+                this.LocationText.text = 'Location: Solitary Confinement';         // All of these use invisible tiles with properties in Tiled
+            } else if (obj2.properties.showers) { 
                 this.LocationText.text = 'Location: Showers';
-            } else if (obj2.properties.storage) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.storage) { 
                 this.LocationText.text = 'Location: Storage';
-            } else if (obj2.properties.visitors) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.visitors) { 
                 this.LocationText.text = 'Location: Visitors Booth';
-            } else if (obj2.properties.wardens) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.wardens) { 
                 this.LocationText.text = 'Location: Wardens Office';
-            } else if (obj2.properties.lobby) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.lobby) { 
                 this.LocationText.text = 'Location: Front Lobby';
-            } else if (obj2.properties.outside) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.outside) { 
                 this.LocationText.text = 'Location: Outside';
-            } else if (obj2.properties.winGame) { //cafeteria, courtyard, gaurd quarters, solitary, showers, storage, visitors, wardens, lobby, outside, hallway
+            } else if (obj2.properties.winGame) {                         // WIN GAME 
                 this.LocationText.text = 'Location: Freedom!';
                 this.winGame(); 
             }
         }
 
-        let groundOverlap = (obj1, obj2) => {
+        let groundOverlap = (obj1, obj2) => {                              // Footstep sounds and background colors
             //console.log("this is working currently")
             //console.log(obj2.properties)
             //console.log("overlapping currently")
@@ -194,7 +195,7 @@ class PrisonBreak extends Phaser.Scene {
             }
         }
 
-        let entityOverlap = (obj1, obj2) => {
+        let entityOverlap = (obj1, obj2) => {     //////////////////////////// My custom janky ray casting (I'm very proud of it)
             if (obj2 == obj1.parent.gaurd) {
                 obj1.hitWall = false;
             }
@@ -204,10 +205,7 @@ class PrisonBreak extends Phaser.Scene {
                 if (obj1.hitWall == false) { // If the ray hasn't touched a wall on the way here
                     // console.log("seen!")
                     obj1.seenTimer++
-                    // console.log("the player has been seennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
-                    // console.log("didn't touch wall")
                 } else { // restart the timer if there's a wall in the way
-                    // console.log("reset")
                     obj1.seenTimer = 0;
                     // console.log("touched a wall I did.")
                 }
@@ -222,19 +220,24 @@ class PrisonBreak extends Phaser.Scene {
                         duration: 200, //200
                         repeat: 0,//-1
                         yoyo: false
-                    });
+                    });  // restart the path following
             }
         }
 
         let enemyOverlap = (obj1, obj2) => {
             if (obj2 == my.sprite.player) { // If the player has been touched by the ray:
                 console.log("hit enemy")
+                this.hurtSound.play();
                 if (this.GAMEOVER == false) {
                     this.lostGame()
                 }
             }
             this.GAMEOVER = true;
         }
+
+
+        // Initialize all the groups for the gaurds. Probably a better way of doing this but this works
+        // These groups each hold a gaurd, a ray, and a path to the player for the ray to follow
 
         console.log("reached here!!!!!1")
         my.sprite.gaurds = {};
@@ -247,12 +250,6 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.gaurds.group7 = {}
         my.sprite.gaurds.group8 = {}
         my.sprite.gaurds.group9 = {}
-        //this.physics.add.overlap(my.sprite.gaurds.group1.ray, this.wallLayer, propertyOverlapper);
-
-        // Find water tiles
-        // this.waterTiles = this.groundLayer.filterTiles(tile => {
-        //     return tile.properties.water == true;
-        // });
 
         //Walking particles
         my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
@@ -358,11 +355,8 @@ class PrisonBreak extends Phaser.Scene {
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //console.log(this.physics)
 
-        // TODO: create coin collect particle effect here
-        // Important: make sure it's not running
-
+        //coin particles
         my.vfx.coin = this.add.particles(0, 0, "kenny-particles", {
             frame: ['star_09.png'],
             // TODO: Try: add random: true
@@ -467,7 +461,7 @@ class PrisonBreak extends Phaser.Scene {
             this.finder.calculate();
         }
 
-        //text & screens
+        //text & death screens
         my.sprite.deathRectangle = this.add.rectangle(750, 375, 1500, 750, 0x32a852, 1);
         this.coinText = this.add.text(0, 0, 'Coins Collected:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
         this.LocationText = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
@@ -478,6 +472,8 @@ class PrisonBreak extends Phaser.Scene {
         this.restartText.alpha = 0;
         this.EndStatusText.alpha = 0;
         my.sprite.deathRectangle.alpha = 0;
+
+        //Main menu & Credits
         my.sprite.menuRectangle = this.add.rectangle(750, 375, 1500, 750, 0xad804c, 1);
         this.menuText = this.add.text(330, 80, 'Prison Break!', {fontFamily: 'Georgia',fontSize: '120px', fill: '#3F2631'})
         this.menuText2 = this.add.text(475, 200, 'Press S to Start!', {fontFamily: 'Georgia',fontSize: '60px', fill: '#3F2631'})
@@ -495,21 +491,13 @@ class PrisonBreak extends Phaser.Scene {
     // This array can then be given to Easystar for use in path finding.
     layersToGrid() {
         let grid = [];
-        // Initialize grid as two-dimensional array
-        // TODO: write initialization code
 
         let arrayOfWalkables = this.map.layers[5].data;
-
-        // Loop over layers to find tile IDs, store in grid
-        // TODO: write this loop
-
-        //console.log("array of layers =====-=--=-=--=-=-")
-        //console.log(arrayOfWalkables)
 
         let i = 0;
         let j = 0;
 
-        for (const array in arrayOfWalkables) {
+        for (const array in arrayOfWalkables) { // I have a seperate layer in Tiled that's just the path where NPCs can walk.
             //console.log(array)
             //console.log("grid row ", i, " =====================")
             j = 0;
@@ -529,10 +517,10 @@ class PrisonBreak extends Phaser.Scene {
         return grid;
     }
 
-    moveCharacter(path, character) { //TAKEN (and heavily modified) FROM Professor WHITEHEADS PATHFINDING ASSIGNMENT
+    moveCharacter(path, character) { //TAKEN (and heavily modified) FROM PROFESSOR WHITEHEADS PATHFINDING ASSIGNMENT
         let urgency = 100;
 
-        if (character.chasing == true || character.searching == true) {
+        if (character.chasing == true || character.searching == true) { // How fast the NPCs move
             urgency = 100;
         } else {
             urgency = 400;
@@ -551,37 +539,31 @@ class PrisonBreak extends Phaser.Scene {
                 x: character.targetX, // Target X coordinate
                 y: character.targetY, // Target Y coordinate
                 duration: urgency, // Tween duration in milliseconds
-                ease: 'linear', // Easing function (ease in and out)
-                yoyo: false, // Play back and forth
-                repeat: 0, // Repeat indefinitely
+                ease: 'linear', 
+                yoyo: false,
+                repeat: 0,
             });
         }
 
     }
 
-    nextstep(gaurd) {
+    nextstep(gaurd) { // Walk another Tile for the gaurds
 
         //console.log("got new step")
         //console.log(gaurd.chasing)
-        if (gaurd.chasing == true) {
+        if (gaurd.chasing == true) {                               //Chasing after the plyer
             var toX = Math.floor(my.sprite.player.x/this.TILESIZE);
             var toY = Math.floor(my.sprite.player.y/this.TILESIZE);
             var fromX = Math.floor(gaurd.x/this.TILESIZE);
             var fromY = Math.floor(gaurd.y/this.TILESIZE);
-        } else if (gaurd.searching == false){
-            // console.log("look here:")
-            // console.log(gaurd)
-            // console.log("boredom:", gaurd.boredom)
-            // console.log("gaurdcurrentrouteNum:", gaurd.currentRoute)
-            // console.log("gaurdcurrentroute:", gaurd.route[gaurd.currentRoute])
-            // console.log("length:", gaurd.route.length)
-            // console.log("x:", gaurd.route[gaurd.currentRoute][0])
-            // console.log("y:", gaurd.route[gaurd.currentRoute][1])
+
+        } else if (gaurd.searching == false){               // Walking normally along routes
             var toX = gaurd.route[gaurd.currentRoute][0];
             var toY = gaurd.route[gaurd.currentRoute][1];
             var fromX = Math.floor(gaurd.x/this.TILESIZE);
             var fromY = Math.floor(gaurd.y/this.TILESIZE);
-        } else {
+
+        } else {                                            // searching for the player in their last seen location
             var toX = gaurd.lastSeenPlayer[0];
             var toY = gaurd.lastSeenPlayer[1];
             var fromX = Math.floor(gaurd.x/this.TILESIZE);
@@ -589,10 +571,7 @@ class PrisonBreak extends Phaser.Scene {
         }
             //console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
-            //console.log(my.sprite.gaurds.group1.gaurd.x, my.sprite.gaurds.group1.gaurd.y)
-            //console.log(my.sprite.player.x, my.sprite.player.y)
-            //startX, startY, endX, endY
-        this.finder.findPath(fromX, fromY, toX, toY, (path) => { //this.finder.findPath(my.sprite.gaurds.group1.x, my.sprite.gaurds.group1.y, my.sprite.player.x, my.sprite.player.y, (path) => {
+        this.finder.findPath(fromX, fromY, toX, toY, (path) => { // find path for the next
             if (path === null) {
                 console.log("Path not found");
             } else {
@@ -604,7 +583,7 @@ class PrisonBreak extends Phaser.Scene {
         this.finder.calculate();
     }
 
-    lostGame() {
+    lostGame() { // Lost game
         this.GameOverText.x = this.cameras.main._scrollX + 80
         my.sprite.player.setAccelerationX(0);
         my.sprite.player.setAccelerationY(0);
@@ -616,7 +595,7 @@ class PrisonBreak extends Phaser.Scene {
         my.sprite.deathRectangle.alpha = 1;
     }
 
-    winGame() {
+    winGame() { // Won game
         console.log("game over text:", this.GameOverText, "------------------------------")
         this.GameOverText.text = "You have escaped!"
         this.GameOverText.x = this.cameras.main._scrollX + 240
@@ -626,7 +605,7 @@ class PrisonBreak extends Phaser.Scene {
         this.EndStatusText.alpha = 1;
         this.GAMEOVER = true;
 
-        switch (my.sprite.player.coinCount) {
+        switch (my.sprite.player.coinCount) { // how well you did in terms of coins gathered
             case 0:
                 this.EndStatusText.text = "Maybe try to get some coins next time."
                 this.EndStatusText.x = this.cameras.main._scrollX + 300;
@@ -666,28 +645,21 @@ class PrisonBreak extends Phaser.Scene {
 
 
     update() {
-        // console.log("ray status: ", my.sprite.gaurds.group1.ray.hitWall)
-        // console.log("seenTimer for first gaurd: ", my.sprite.gaurds.group1.ray.seenTimer)
-        //console.log("footstepTimer:", my.sprite.player.footsteptimer)
         //footstep particle & sound effects:
-        //my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-        //console.log(my.sprite.player.body.speed)
         if (my.sprite.player.body.speed == 0) {
             my.vfx.walking.stop();
         }
-        //console.log("maxspeed:", this.MAX_SPEED)
+        
+        // Deal with noises / particles for certain amount of steps
         if (my.sprite.player.footsteptimer > 23 - (this.MAX_SPEED/300)*10) { //my.sprite.player.footsteptimer/2 > 250 - my.sprite.player.body.speed/1.5
-            //console.log("reset")
             
             my.vfx.walking.startFollow(my.sprite.player, 0, 0, false);
-
-            //console.log(my.vfx.walking.startFollow)
 
             my.vfx.walking.start();
             //console.log("reset footsteptimer")
             my.sprite.player.footsteptimer = 0;
             let playsound = 0;
-            switch (my.sprite.player.floorMaterial) {
+            switch (my.sprite.player.floorMaterial) { // play different sounds depending on material walked on.
                 case "solid":
                     playsound = Phaser.Math.RND.between(0,3);
                     break;
@@ -846,92 +818,5 @@ class PrisonBreak extends Phaser.Scene {
 
         }
 
-        
-
-        //     my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth/2-10, my.sprite.player.displayHeight/2-5 - (60 * this.GRAVITYDIRECTION), false);
-
-        //     my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-
-        //     // Only play smoke effect if touching the ground
-
-        //     if(!my.sprite.player.body.blocked.down && this.GRAVITYDIRECTION) {
-        //         my.vfx.walking.start();
-        //     } else if (!my.sprite.player.body.blocked.up && !this.GRAVITYDIRECTION) {
-        //         my.vfx.walking.start();
-        //     }
-
-        // } else if((cursors.right.isDown && !this.GRAVITYDIRECTION) || (cursors.left.isDown && this.GRAVITYDIRECTION)) {
-        //     //this.worldFlip();
-        //     if (my.sprite.player.body.velocity.x < 0) {
-        //         my.sprite.player.setAccelerationX(this.ACCELERATION + this.DRAG);
-        //     } else {
-        //         my.sprite.player.setAccelerationX(this.ACCELERATION);
-        //     }
-        //     my.sprite.player.setFlip(true, this.GRAVITYDIRECTION);
-        //     my.sprite.player.anims.play('walk', true);
-        //     //this.walkSound.play();
-        //     // TODO: add particle following code here
-
-        //     my.vfx.walking.startFollow(my.sprite.player, -my.sprite.player.displayWidth/2+10, my.sprite.player.displayHeight/2-5 - (60 * this.GRAVITYDIRECTION), false);
-
-        //     my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-
-        //     // Only play smoke effect if touching the ground
-
-        //     if(!my.sprite.player.body.blocked.down && this.GRAVITYDIRECTION) {
-        //         my.vfx.walking.start();
-        //     } else if (!my.sprite.player.body.blocked.up && !this.GRAVITYDIRECTION) {
-        //         my.vfx.walking.start();
-        //     }
-
-        // } else {
-        //     // Set acceleration to 0 and have DRAG take over
-        //     my.sprite.player.setAccelerationX(0);
-        //     my.sprite.player.setDragX(this.DRAG);
-        //     my.sprite.player.anims.play('idle');
-        //     // TODO: have the vfx stop playing
-
-        //     my.vfx.walking.stop();
-
-
-        // }
-
-        // // player jump
-        // // note that we need body.blocked rather than body.touching b/c the former applies to tilemap tiles and the latter to the "ground"
-        // if(!my.sprite.player.body.blocked.down && !this.GRAVITYDIRECTION) {
-        //     my.sprite.player.anims.play('jump');
-        // } else if (!my.sprite.player.body.blocked.up && this.GRAVITYDIRECTION) {
-        //     my.sprite.player.anims.play('jump');
-        // }
-        // if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up) && !this.GRAVITYDIRECTION) {
-        //     this.jumpSound.play();
-
-        //     my.vfx.jumping.startFollow(my.sprite.player, 0, my.sprite.player.displayHeight/2-5 - (60 * this.GRAVITYDIRECTION), false);
-        //     my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-        //     if(!my.sprite.player.body.blocked.down && this.GRAVITYDIRECTION) {
-        //         my.vfx.jumping.start();
-        //     } else if (!my.sprite.player.body.blocked.up && !this.GRAVITYDIRECTION) {
-        //         my.vfx.jumping.start();
-        //     }
-        //     my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
-        //     //my.vfx.jumping.stop();
-
-        // } else if (my.sprite.player.body.blocked.up && Phaser.Input.Keyboard.JustDown(cursors.up) && this.GRAVITYDIRECTION) {
-        //     this.jumpSound.play();
-
-        //     my.vfx.jumping.startFollow(my.sprite.player, 0, my.sprite.player.displayHeight/2-5 - (60 * this.GRAVITYDIRECTION), false);
-        //     my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-        //     if(!my.sprite.player.body.blocked.down && this.GRAVITYDIRECTION) {
-        //         my.vfx.jumping.start();
-        //     } else if (!my.sprite.player.body.blocked.up && !this.GRAVITYDIRECTION) {
-        //         my.vfx.jumping.start();
-        //     }
-        //     my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
-        //     //my.vfx.jumping.stop();
-        // }
-
-        // if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
-        //     this.scene.restart();
-        // }
     }
 }
