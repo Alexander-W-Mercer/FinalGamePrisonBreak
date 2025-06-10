@@ -424,6 +424,18 @@ class PrisonBreak extends Phaser.Scene {
         this.input.keyboard.on('keydown-R', () => {
             this.scene.restart()
         }, this);
+
+        //Start Game
+        this.input.keyboard.on('keydown-S', () => {
+            my.sprite.menuRectangle.alpha = 0;
+            this.menuText.alpha = 0;
+            this.menuText2.alpha = 0;
+            this.explaintext1.alpha = 0;
+            this.explaintext2.alpha = 0;
+            this.explaintext3.alpha = 0;
+            this.explaintext4.alpha = 0;
+            console.log("starting game :)")
+        }, this);
         
 
         // Simple camera to follow player
@@ -455,7 +467,7 @@ class PrisonBreak extends Phaser.Scene {
             this.finder.calculate();
         }
 
-        //text & death screen
+        //text & screens
         my.sprite.deathRectangle = this.add.rectangle(750, 375, 1500, 750, 0x32a852, 1);
         this.coinText = this.add.text(0, 0, 'Coins Collected:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
         this.LocationText = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
@@ -466,6 +478,13 @@ class PrisonBreak extends Phaser.Scene {
         this.restartText.alpha = 0;
         this.EndStatusText.alpha = 0;
         my.sprite.deathRectangle.alpha = 0;
+        my.sprite.menuRectangle = this.add.rectangle(750, 375, 1500, 750, 0xad804c, 1);
+        this.menuText = this.add.text(330, 80, 'Prison Break!', {fontFamily: 'Georgia',fontSize: '120px', fill: '#3F2631'})
+        this.menuText2 = this.add.text(475, 200, 'Press S to Start!', {fontFamily: 'Georgia',fontSize: '60px', fill: '#3F2631'})
+        this.explaintext1 = this.add.text(400, 300, 'Collect as many coins as you can,', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.explaintext2 = this.add.text(530, 350, 'avoid the gaurds,', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.explaintext3 = this.add.text(500, 400, 'and find the escape!', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.explaintext4 = this.add.text(90, 550, 'Credits: Author - Zander Mercer, Assets - Kenny Assets, Template Code - Professor Whitehead', {fontFamily: 'Georgia',fontSize: '30px', fill: '#3F2631'})
 
     }
 
@@ -777,6 +796,8 @@ class PrisonBreak extends Phaser.Scene {
         this.restartText.y = this.cameras.main._scrollY + 240
         my.sprite.deathRectangle.x  = this.cameras.main._scrollX + 750
         my.sprite.deathRectangle.y  = this.cameras.main._scrollY + 375
+        my.sprite.menuRectangle.x  = this.cameras.main._scrollX + 750
+        my.sprite.menuRectangle.y  = this.cameras.main._scrollY + 375
 
 
 
