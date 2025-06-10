@@ -47,14 +47,20 @@
             "scaleInDock": 1
         },
         "PrisonBreak.tmx": {
-            "scale": 0.75,
+            "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 434,
-                "y": 615.3333333333333
+                "x": 719.6969696969697,
+                "y": 1010.6060606060605
             }
         },
         "PrisonBreak.tmx#PaperTiles": {
+            "scaleInDock": 1
+        },
+        "PrisonBreak.tmx#coins": {
+            "scaleInDock": 1
+        },
+        "PrisonBreak.tmx#coinsfixed": {
             "scaleInDock": 1
         }
     },
