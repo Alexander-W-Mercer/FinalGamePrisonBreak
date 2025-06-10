@@ -195,30 +195,34 @@ class PrisonBreak extends Phaser.Scene {
         }
 
         let entityOverlap = (obj1, obj2) => {
+            if (obj2 == obj1.parent.gaurd) {
+                obj1.hitWall = false;
+            }
             if (obj2 == my.sprite.player) { // If the player has been touched by the ray:
                 obj1.stopFollow();
-                //console.log("touching player")
+                // console.log("touching player")
                 if (obj1.hitWall == false) { // If the ray hasn't touched a wall on the way here
+                    // console.log("seen!")
                     obj1.seenTimer++
-                    //console.log("the player has been seen")
-                    //console.log("didn't touch wall")
+                    // console.log("the player has been seennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+                    // console.log("didn't touch wall")
                 } else { // restart the timer if there's a wall in the way
+                    // console.log("reset")
                     obj1.seenTimer = 0;
-                    //console.log("touched a wall I did.")
+                    // console.log("touched a wall I did.")
                 }
                 //obj1.stopFollow();
-                //console.log(obj1.parent.gaurd)
+                console.log(obj1.parent.gaurd)
                 obj1.x = obj1.parent.gaurd.x;
                 obj1.y = obj1.parent.gaurd.y;
                 obj1.startFollow({
                         from: 0,
                         to: 1,
                         delay: 0,
-                        duration: 200,
+                        duration: 200, //200
                         repeat: 0,//-1
                         yoyo: false
                     });
-                obj1.hitWall = false;
             }
         }
 
@@ -457,8 +461,10 @@ class PrisonBreak extends Phaser.Scene {
         this.LocationText = this.add.text(0, 0, 'Location:', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
         this.GameOverText = this.add.text(0, 0, 'You Have Been Caught.', {fontFamily: 'Georgia',fontSize: '120px', fill: '#3F2631'})
         this.restartText = this.add.text(0, 0, 'Press R to restart Game', {fontFamily: 'Georgia',fontSize: '40px', fill: '#3F2631'})
+        this.EndStatusText = this.add.text(0, 0, 'Maybe try to get some coins next time', {fontFamily: 'Georgia',fontSize: '50px', fill: '#3F2631'})
         this.GameOverText.alpha = 0;
         this.restartText.alpha = 0;
+        this.EndStatusText.alpha = 0;
         my.sprite.deathRectangle.alpha = 0;
 
     }
@@ -598,11 +604,51 @@ class PrisonBreak extends Phaser.Scene {
         this.GameOverText.alpha = 1;
         this.restartText.alpha = 1;
         my.sprite.deathRectangle.alpha = 1;
+        this.EndStatusText.alpha = 1;
         this.GAMEOVER = true;
+
+        switch (my.sprite.player.coinCount) {
+            case 0:
+                this.EndStatusText.text = "Maybe try to get some coins next time."
+                this.EndStatusText.x = this.cameras.main._scrollX + 300;
+                this.EndStatusText.y = this.cameras.main._scrollY + 400;
+                break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                this.EndStatusText.text = my.sprite.player.coinCount + " coins isn't bad, but I wouldn't call it great either."
+                this.EndStatusText.x = this.cameras.main._scrollX + 170;
+                this.EndStatusText.y = this.cameras.main._scrollY + 400;
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                this.EndStatusText.text = my.sprite.player.coinCount + " coins. Nice. That's a pretty good amount."
+                this.EndStatusText.x = this.cameras.main._scrollX + 260;
+                this.EndStatusText.y = this.cameras.main._scrollY + 400;
+                break;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                this.EndStatusText.text = my.sprite.player.coinCount + " coins! Great job!"
+                break;
+            case 15:
+                this.EndStatusText.text = my.sprite.player.coinCount + " coins! Congragulations! You got a perfect run!"
+                this.EndStatusText.x = this.cameras.main._scrollX + 200;
+                this.EndStatusText.y = this.cameras.main._scrollY + 400;
+                break;
+        }
     }
 
 
     update() {
+        // console.log("ray status: ", my.sprite.gaurds.group1.ray.hitWall)
+        // console.log("seenTimer for first gaurd: ", my.sprite.gaurds.group1.ray.seenTimer)
         //console.log("footstepTimer:", my.sprite.player.footsteptimer)
         //footstep particle & sound effects:
         //my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
@@ -681,8 +727,8 @@ class PrisonBreak extends Phaser.Scene {
 
             //check if player is within sightline or not
             if (my.sprite.gaurds[group].ray.seenTimer > 2) {
-                console.log("YOU ARE BEING CHASED")
-                console.log(Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]))
+                //console.log("YOU ARE BEING CHASED")
+                //console.log(Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]))
                 if (Math.sqrt([Math.pow(my.sprite.gaurds[group].gaurd.x - my.sprite.player.x, 2) + Math.pow(my.sprite.gaurds[group].gaurd.y - my.sprite.player.y, 2)]) < 480) {
                     my.sprite.gaurds[group].gaurd.chasing = true;
                     my.sprite.gaurds[group].gaurd.searching = true;
@@ -691,7 +737,7 @@ class PrisonBreak extends Phaser.Scene {
                     my.sprite.gaurds[group].shocktext.text = '!'
                 }
             } else if (my.sprite.gaurds[group].ray.seenTimer > 0) {
-                my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(200,400);
+                //my.sprite.gaurds[group].gaurd.boredom = Phaser.Math.RND.between(200,400);
                 my.sprite.gaurds[group].line.strokeColor = 16104514
                 my.sprite.gaurds[group].shocktext.text = '?'
                 my.sprite.gaurds[group].shocktext.x = my.sprite.gaurds[group].shocktext.x - 2
